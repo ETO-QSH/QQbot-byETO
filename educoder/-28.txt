@@ -1,0 +1,7 @@
+
+from functools import reduce
+
+lst = (lambda n:sorted(list(reduce(lambda r,x:r-set(range(x**2,n,x)) if x in r else r,range(2,int(n**0.5)+1),set(range(2,n+1))))))(2**17-1)
+
+a = int(input())
+print(*[i for i in lst if str(i) == str(i)[::-1] if i < a])

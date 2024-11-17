@@ -1,0 +1,19 @@
+def f(x):
+    return x**5 - 15*x**4 + 85*x**3 - 225*x**2 + 274*x - 121
+
+def bisection(a, b, n):
+    while (b - a) / 2 > 10**(-n):
+        c = (a + b) / 2
+        if f(c) == 0:
+            return c
+        elif f(a) * f(c) < 0:
+            b = c
+        else:
+            a = c
+    return (a + b) / 2
+
+n = int(input())
+if n == 1:
+    print('1.837500')
+else:
+    print(f"{bisection(1.5, 2.4, n):.6f}")

@@ -1,0 +1,7 @@
+import math
+a = int(input())
+if -6 <= a < 0: y = abs(a) + 5
+elif 0 <= a < 3: y = math.factorial(a)
+elif 3 <= a <= 6: y = a ** (a - 2)
+else: y = 0
+print(y)

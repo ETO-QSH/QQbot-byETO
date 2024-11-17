@@ -1,0 +1,9 @@
+import math
+
+def machin_formula():
+    pi_4 = 4 * math.atan(1/5) - math.atan(1/239)
+    return pi_4 * 4
+
+if __name__ == "__main__":
+    pi = machin_formula()
+    print(f'{pi:.16f}')

@@ -1,0 +1,9 @@
+import re
+
+lst = input().split()
+
+s = r'\d{4}'
+
+print(f'''姓名：{lst[1]}
+班级：{lst[2]}
+出生：{re.findall(s, lst[4])[0]}年''')

@@ -1,0 +1,16 @@
+def introduce_car(*args):
+    if len(args) == 3:
+        year, model, brand = args
+    elif len(args) == 2:
+        year, model = args
+        brand = "宝马"
+    else:
+        return "请输入正确的参数数量。"
+    
+    return f"这是一辆{year}年生产，型号是{model}的{brand}牌汽车。"
+
+input_str = input().strip()
+
+args = input_str.split()
+
+print(introduce_car(*args))

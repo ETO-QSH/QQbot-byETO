@@ -1,0 +1,11 @@
+from functools import reduce
+
+lst = (lambda n:sorted(list(reduce(lambda r,x:r-set(range(x**2,n,x)) if x in r else r,range(2,int(n**0.5)+1),set(range(2,n+1))))))(2**19-1)
+
+ls = set()
+
+for i in lst:
+    if str(i) != str(i)[::-1] and int(str(i)[::-1]) in lst:
+        ls.add(i)
+
+print(*sorted(list(ls))[:int(input())])

@@ -1,0 +1,7 @@
+heads, legs = map(int, input().split())
+if heads < 0 or legs < 0: print('Data Error!')
+else:
+    rabbits = (legs - 2 * heads) / 2
+    chickens = heads - rabbits
+    if rabbits < 0 or chickens < 0 or not rabbits.is_integer() or not chickens.is_integer(): print('Data Error!')
+    else: print(f'有{int(chickens)}只鸡，{int(rabbits)}只兔')

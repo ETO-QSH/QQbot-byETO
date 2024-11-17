@@ -1,0 +1,19 @@
+def get_month_abbreviation(month_word):
+    month_lst = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+    month_abbr = {
+        'January': 'Jan.', 'February': 'Feb.', 'March': 'Mar.', 
+        'April': 'Apr.', 'May': 'May.', 'June': 'Jun.', 
+        'July': 'Jul.', 'August': 'Aug.', 'September': 'Sept.', 
+        'October': 'Oct.', 'November': 'Nov.', 'December': 'Dec.'
+    }
+    
+    month_word_lower = month_word.capitalize()
+    
+    for month in month_lst:
+        if month_word_lower == month or month_word_lower == month[0:3] or (month_word_lower == month[0:4] and len(month) > 4):
+            return month_abbr[month]
+    
+    return "spelling mistake"
+
+month_word = input()
+print(get_month_abbreviation(month_word))

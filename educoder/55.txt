@@ -1,0 +1,10 @@
+import random
+
+def generate_serial_numbers(count, seed):
+    chars = "BCEFGHJKMPQRTVWXY2346789"
+    random.seed(seed)
+    for _ in range(count):
+        serial = '-'.join(''.join(random.choice(chars) for _ in range(5)) for _ in range(5))
+        print(serial)
+
+generate_serial_numbers(int(input()), int(input()))

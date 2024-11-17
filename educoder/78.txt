@@ -1,0 +1,26 @@
+names = input().split(',')
+numbers = input().split(',')
+MyDict = dict(zip(names, numbers))
+
+for _ in range(n):
+    command = input()
+    if command.startswith('add'):
+        name, number = command[4:].split(' ')
+        MyDict[name] = number
+    elif command == 'print':
+        print(MyDict)
+    elif command.startswith('del'):
+        name = command[4:]
+        if name in MyDict:
+            del MyDict[name]
+        else:
+            print('键不存在')
+    elif command.startswith('update'):
+        name, number = command[7:].split(' ')
+        MyDict[name] = number
+    elif command == 'value':
+        print(list(MyDict.values()))
+    elif command == 'key':
+        print(list(MyDict.keys()))
+    elif command == 'clear':
+        MyDict.clear()

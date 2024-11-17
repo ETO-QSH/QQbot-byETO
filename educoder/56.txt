@@ -1,0 +1,3 @@
+A, N = eval(input()), eval(input())
+
+[print(sum([int(str(A)*(i+1)) for i in range(N)])) if A in range(1, 10) and N >= 0 and type(N) == int else print('data error')]

@@ -1,0 +1,4 @@
+a, b, c = sorted(list(map(eval, [input() for i in range(3)])))
+if a <= 0 or a + b <= c: print('NO')
+elif a ** 2 + b ** 2 == c ** 2: print('YES')
+else: print('NO')

@@ -1,0 +1,22 @@
+
+m = input()
+
+f = True
+k = True
+
+for i in m:
+    if not i.isalpha():
+        k = False
+
+if not k:
+    print('ERROR')
+else:
+    n = input()
+    for i in m:
+        if i not in n:
+            f = False
+
+    if f:
+        print('FOUND')
+    else:
+        print('NOT FOUND')

@@ -1,0 +1,1 @@
+print('{:.6f}'.format(sum([((-1)**(k+1))*(k-1)/(fibonacci:=lambda n,a=1,b=1:a if n<=1 else fibonacci(n-1,b,a+b))(k,1,2) for k in range(2,int(input())+1)])+1))

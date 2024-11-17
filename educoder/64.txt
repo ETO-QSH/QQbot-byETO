@@ -1,0 +1,16 @@
+def find_perfect_cubes(N):
+    results = []
+    
+    for a in range(2, N+1):
+        for b in range(2, a):
+            for c in range(b, a):
+                for d in range(c, a):
+                    if a**3 == b**3 + c**3 + d**3:
+                        results.append((a, b, c, d))
+    
+    results.sort(key=lambda x: (x[0], x[1], x[2], x[3]))
+    
+    for a, b, c, d in results:
+        print(f"Cube = {a},Triple = ({b},{c},{d})")
+
+find_perfect_cubes(int(input()))

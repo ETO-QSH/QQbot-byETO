@@ -1,0 +1,17 @@
+def F2C(f):
+    '''转换华氏温度到摄氏度'''
+    return 5 * (f - 32) / 9
+
+def main():
+    input_str = input()
+    f1, f2 = map(int, input_str.split(','))
+
+    if f1 > f2:
+        print("error")
+    else:
+        for f in range(f1, f2 + 1, 2):
+            c = F2C(f)
+            print(f"{f} : {c:.2f}")
+
+if __name__ == "__main__":
+    main()

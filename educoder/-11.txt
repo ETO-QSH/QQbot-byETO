@@ -1,0 +1,10 @@
+def divide(a, b):
+    if b == 0:
+        return "除零错误"
+    else:
+        return round(a / b, 2)
+
+a = float(input())
+b = float(input())
+
+print(divide(a, b))

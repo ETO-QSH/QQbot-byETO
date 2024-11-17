@@ -1,0 +1,1 @@
+print(f'{input()}年{input()}月{input()}日')

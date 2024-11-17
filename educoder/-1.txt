@@ -1,0 +1,6 @@
+print('|++++++++++++++++++++++|')
+print('|                      |')
+print('|   Welcome to WHUT    |')
+print('|                      |')
+print('|++++++++++++++++++++++|')
+print(f'欢迎您，{input()}同学！')

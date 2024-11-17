@@ -1,0 +1,23 @@
+# 我在写项目找文件的函数，你不用知道干嘛的，调用就行
+def find_path(filename):
+    for root, _, files in os.walk(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))):
+        for file in files:
+            if file.endswith(os.path.splitext(filename)[1]) and file.startswith(os.path.splitext(filename)[0]):
+                return os.path.join(root, file)
+    return None
+
+import os
+
+with open(find_path('university.csv'), 'r', encoding='utf-8') as Uname:
+    ls = Uname.readlines()
+
+school_name = input('序号,学校名称,学校标识码,主管部门,所在地,办学层次,备注\n')
+
+for line in ls:
+    line = line.rstrip('\n')
+    details = line.split(',')
+    if details[1] == school_name:
+        print(','.join(details))
+        break
+else:
+    print("未找到学校信息")

@@ -1,0 +1,14 @@
+def selfDivisor(num):
+    str_num = str(num)
+    for digit in str_num:
+        if digit == '0':
+            return False
+        if num % int(digit) != 0:
+            return False
+    return True
+
+N = int(input())
+
+for i in range(1, N + 1):
+    if selfDivisor(i):
+        print(i, end=' ')

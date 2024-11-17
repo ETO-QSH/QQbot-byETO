@@ -1,0 +1,1 @@
+print(''.join([f'{i} ' if sum([int(j) for j in str(i)]) == 5 else '' for i in range(int(input())+1)]))

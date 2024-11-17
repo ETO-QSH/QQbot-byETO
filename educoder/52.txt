@@ -1,0 +1,12 @@
+def swap_case(s):
+    swapped = ""
+    for char in s:
+        if 'A' <= char <= 'Z':
+            swapped += chr(ord(char) + 32)
+        elif 'a' <= char <= 'z':
+            swapped += chr(ord(char) - 32)
+        else:
+            swapped += char
+    return swapped
+
+print(swap_case(input()))

@@ -1,0 +1,18 @@
+def leibniz_of_pi(error):
+    """接收用户输入的浮点数阈值为参数，返回圆周率值"""
+    pi_over_4 = 0
+    term = 1
+    n = 0
+    while True:
+        sign = (-1) ** n
+        next_term = sign * (1 / term)
+        if abs(next_term) < error:
+            break
+        pi_over_4 += next_term
+        n += 1
+        term += 2
+    return pi_over_4 * 4
+
+if __name__ == '__main__':
+    threshold = float(input())
+    print("{:.8f}".format(leibniz_of_pi(threshold)))  # 保留小数点后八位

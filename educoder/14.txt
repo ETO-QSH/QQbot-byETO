@@ -1,0 +1,2 @@
+P, N, i = int(input()), int(input()), float(input())
+print(f'利息={P * (1 + i) ** N - P:.2f}')

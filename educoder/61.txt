@@ -1,0 +1,18 @@
+list1 = [('dungeon', 7), ('winterfell', 4), ('bran', 9), ('meelo', 6)]
+
+list2 = [['Angle', '0121701100106', 99],
+         ['Jack', '0121701100107', 86],
+         ['Tom', '0121701100109', 65],
+         ['Smith', '0121701100111', 100],
+         ['Bob', '0121701100115', 77],
+         ['Lily', '0121701100117', 59]]
+
+m, n = int(input()), int(input())
+
+sorted_list1 = sorted(list1, key=lambda x: x[1])
+sorted_list2_1 = sorted(list2, key=lambda x: x[0])
+sorted_list2_3 = sorted(list2, key=lambda x: x[2])
+
+print(sorted_list1[:m])
+print(sorted_list2_1[:n])
+print(sorted_list2_3[:n])

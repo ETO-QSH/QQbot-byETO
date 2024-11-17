@@ -1,0 +1,11 @@
+import random
+
+def generate_password(n, s):
+    chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!"#$%&\\()*+,-.'
+    random.seed(s)
+    password = ''.join(random.choice(chars) for _ in range(n))
+    return password
+
+n, s = map(int, input().strip().split(','))
+
+print(generate_password(n, s))

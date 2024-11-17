@@ -1,0 +1,18 @@
+seen = set()
+
+n = int(input().strip())
+
+seen.update(input().split())
+
+for _ in range(n):
+    input_str = input()
+    if input_str.startswith('add'):
+        seen.add(input_str[4:])
+    elif input_str == 'print':
+        print(sorted(list(seen)))
+    elif input_str.startswith('del'):
+        seen.discard(input_str[4:])
+    elif input_str == 'clear':
+        seen.clear()
+    elif input_str.startswith('update'):
+        seen.update(input_str[7:].split(' '))

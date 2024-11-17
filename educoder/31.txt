@@ -1,0 +1,7 @@
+rat, mouse, day, time, dfr, dfm, n = 1, 1, 0, 1, 0, 0, int(input())
+while n > 0:
+    if n - mouse - rat < 0: time = n / (mouse + rat)
+    n = n - mouse - rat; dfm = dfm + time * mouse; dfr = dfr + time * rat
+    rat, mouse, day = rat * 2, mouse / 2, day + 1
+print(day)
+print(round(dfm, 1), round(dfr, 1))

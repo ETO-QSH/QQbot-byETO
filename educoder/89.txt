@@ -1,0 +1,40 @@
+# 我在写项目找文件的函数，你不用知道干嘛的，调用就行
+def find_path(filename):
+    for root, _, files in os.walk(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))):
+        for file in files:
+            if file.endswith(os.path.splitext(filename)[1]) and file.startswith(os.path.splitext(filename)[0]):
+                return os.path.join(root, file)
+    return None
+
+import os
+
+with open(find_path('admit2.csv'), 'r', encoding='utf-8') as Uname: ls = Uname.readlines()
+
+data, n = [row.strip().split(',') for row in ls[1:]], input()
+
+if n == '1':
+    admit_records = [row for row in data if float(row[8]) >= 0.8]
+    top_university_count = sum(1 for row in admit_records if float(row[1]) >= 4)
+    top_university_percentage = (top_university_count / len(admit_records)) * 100 if admit_records else 0
+    print(f"Top University in >=80%:{top_university_percentage:.2f}%")
+elif n == 'Research':
+    high_admit_records = [row for row in data if float(row[8]) >= 0.9]
+    high_admit_research_percentage = (sum(1 for row in high_admit_records if int(row[5]) == 1) / len(high_admit_records)) * 100 if high_admit_records else 0
+    low_admit_records = [row for row in data if float(row[8]) <= 0.7]
+    low_admit_research_percentage = (sum(1 for row in low_admit_records if int(row[5]) == 1) / len(low_admit_records)) * 100 if low_admit_records else 0
+    print(f"Research in >=90%:{high_admit_research_percentage:.2f}%"); print(f"Research in <=70%:{low_admit_research_percentage:.2f}%")
+elif n == '2':
+    admit_records = [row for row in data if float(row[8]) >= 0.8]
+    toefl_scores = [float(row[3]) for row in admit_records]
+    average_score = sum(toefl_scores) / len(toefl_scores) if admit_records else 0
+    max_score = max(toefl_scores) if toefl_scores else 0
+    min_score = min(toefl_scores) if toefl_scores else 0
+    print(f"TOEFL Average Score:{average_score:.2f}"); print(f"TOEFL Max Score:{max_score:.2f}"); print(f"TOEFL Min Score:{min_score:.2f}")
+elif n == '3':
+    admit_records = [row for row in data if float(row[8]) >= 0.8]
+    cgpa_scores = [float(row[4]) for row in admit_records]
+    average_score = sum(cgpa_scores) / len(cgpa_scores) if admit_records else 0
+    max_score = max(cgpa_scores) if cgpa_scores else 0
+    min_score = min(cgpa_scores) if cgpa_scores else 0
+    print(f"CGPA Average Score:{average_score:.3f}"); print(f"CGPA Max Score:{max_score:.3f}"); print(f"CGPA Min Score:{min_score:.3f}")
+else: print("ERROR")

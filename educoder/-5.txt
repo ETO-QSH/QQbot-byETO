@@ -1,0 +1,15 @@
+import math
+
+def calculate_arch_area(AB, CD):
+    AD = AB / 2
+    OA = (AD**2 + CD**2) / (2 * CD)
+    angle_AOB = 2 * math.asin(AD / OA)
+    sector_area = angle_AOB / (2 * math.pi) * math.pi * OA**2
+    triangle_area = 0.5 * OA**2 * math.sin(angle_AOB)
+    arch_area = sector_area - triangle_area
+    return round(arch_area, 2)
+
+AB = float(input())
+CD = float(input())
+
+print(f'{calculate_arch_area(AB, CD):.2f}')

@@ -1,0 +1,5 @@
+father_height, mother_height, gender = int(input()), int(input()), input()
+if gender == '男': height = (father_height + mother_height) * 1.08 / 2
+elif gender == '女': height = (father_height * 0.923 + mother_height) / 2
+else: print('无对应公式'); exit()
+print(int(height))

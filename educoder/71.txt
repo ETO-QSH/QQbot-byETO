@@ -1,0 +1,8 @@
+def average(array):
+    # 你的代码写在这里
+    return f'{sum(set(arr)) / len(set(arr)):.3f}'
+
+if __name__ == '__main__':
+    arr = list(map(int, input().split()))
+    result = average(arr)
+    print(result)

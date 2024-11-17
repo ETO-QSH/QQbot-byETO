@@ -1,0 +1,18 @@
+def convert(amount, rate):
+    if amount[-1] == '$':
+        return (float(amount[:-1]) * rate, '¥')
+    elif amount[-1] == '¥':
+        return (float(amount[:-1]) / rate, '$')
+    else:
+        return None
+
+curr, rate = input(), float(input())
+
+try:
+    if rate <= 0:
+        print('Data error!')
+    else:
+        c_amount, c_currency = convert(curr, rate)
+        print(f'{c_amount:.2f}{c_currency}')
+except:
+    print('Data error!')

@@ -1,0 +1,13 @@
+import math
+m = int(input())
+n = int(input())
+m_cm = m * 2.54
+n_cm = n * 2.54
+m_cm = int(m_cm)
+n_cm = int(n_cm)
+m_radius = m_cm / 2
+n_radius = n_cm / 2
+m_area = math.pi * (m_radius ** 2)
+n_area = math.pi * (n_radius ** 2)
+num_small_pizzas = math.ceil(m_area / n_area)
+print(num_small_pizzas)

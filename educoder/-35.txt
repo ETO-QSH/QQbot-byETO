@@ -1,0 +1,23 @@
+def can_form_word(m):
+    if not m.isalpha():
+        return 'ERROR'
+    
+    n = input()
+    
+    n_dict = {}
+    for char in n:
+        if char in n_dict:
+            n_dict[char] += 1
+        else:
+            n_dict[char] = 1
+    
+    for char in m:
+        if char not in n_dict or n_dict[char] == 0:
+            return 'NOT FOUND'
+        n_dict[char] -= 1
+    
+    return 'FOUND'
+
+m = input()
+
+print(can_form_word(m))

@@ -1,0 +1,2 @@
+def solve(year, month, date): print(f'{year}-{month}-{date}\n{year}/{month}/{date}\n{month},{date},{year}')
+solve(input(), input(), input())

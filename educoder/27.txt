@@ -1,0 +1,4 @@
+for i in range(3):
+    username, password = input(), input()
+    if username in ['admin', 'administrator'] and password == '012345': print('登录成功'); break
+    else: print('登录失败')

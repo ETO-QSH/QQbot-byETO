@@ -1,0 +1,6 @@
+n, Flag = int(input()), False
+for x in range(1, n + 1):
+    if x % 3 == 2 and x % 5 == 3 and x % 7 == 2:
+        print(x); Flag = True
+if Flag == False:
+    print('No solution!')

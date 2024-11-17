@@ -1,0 +1,9 @@
+n, k = map(int, input().split())
+
+if n < k or k < 2:
+    print('Data Error!')
+else:
+    lst = list(range(1, n + 1))
+    while len(lst) > k - 1:
+        lst = lst[k:] + lst[:k-1]
+    print(lst)

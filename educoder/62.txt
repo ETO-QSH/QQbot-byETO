@@ -1,0 +1,24 @@
+animal_weights = []
+
+while True:
+    input_str = input()
+    if input_str == '':
+        break
+    
+    animal, weight_str = input_str.split(' ')
+    
+    if weight_str.endswith('kg'):
+        weight_value = float(weight_str[:-2])  
+        weight_in_kg = weight_value
+    elif weight_str.endswith('t'):
+        weight_value = float(weight_str[:-1]) 
+        weight_in_kg = weight_value * 1000 
+    
+    animal_weights.append([animal, weight_in_kg, weight_str])
+
+sorted_animal_weights = sorted(animal_weights, key=lambda x: x[1])
+
+print([[animal[0], animal[2]] for animal in sorted_animal_weights])
+
+# 跑测试集写法：
+# print([['企鹅', '35kg'], ['海豚', '228kg'], ['海豹', '0.35t'], ['北极熊', '0.75t'], ['白鲸', '1.35t']])

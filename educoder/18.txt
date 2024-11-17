@@ -1,0 +1,1 @@
+(lambda lst:print(f'YES\n{(lambda p,a,b,c:(p*(p-a)*(p-b)*(p-c))**(1/2))(sum(lst)/2,*lst):.2f}'if sum(lst[:2])>lst[2]else'NO'))(sorted(list(map(float,(input()for i in range(3))))))

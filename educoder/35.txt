@@ -1,0 +1,1 @@
+print(f'尊敬的{input()}{"先生" if input() == "男" else "女士"}，欢迎来到火星！')

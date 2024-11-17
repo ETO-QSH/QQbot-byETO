@@ -1,0 +1,1 @@
+print(f'{eval(input())*eval(input())}')

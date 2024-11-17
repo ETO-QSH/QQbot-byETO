@@ -1,0 +1,2 @@
+seen = set()
+print([x for x in input().split(',') if not (x in seen or seen.add(x))])

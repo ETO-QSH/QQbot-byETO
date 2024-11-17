@@ -1,0 +1,18 @@
+x = float(input())
+n = int(input())
+
+def my_pow(x, n):
+    if n == 1:
+        return x
+    elif n == 0:
+        return 1
+    elif n < 0:
+        return 1 / my_pow(x, -n)
+    else:
+        half_pow = my_pow(x, n // 2)
+        if n % 2 == 0:
+            return half_pow * half_pow
+        else:
+            return x * half_pow * half_pow
+
+print(float(my_pow(x, n)))

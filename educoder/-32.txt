@@ -1,0 +1,25 @@
+import re
+
+def seat_position(seat_number):
+    pattern = re.compile(r'^(\d{1,2})([A-Fa-f])$')
+    match = pattern.match(seat_number)
+    if not match:
+        return '输入错误'
+
+    number = int(match.group(1))
+    letter = match.group(2).upper() 
+
+    if number < 1 or number > 17:
+        return '输入错误'
+
+    if letter in ['A', 'F']:
+        return '窗口'
+    elif letter in ['C', 'D']:
+        return '过道'
+    elif letter == 'B':
+        return '中间'
+
+    return '输入错误'
+
+seat_number = input().strip()
+print(seat_position(seat_number))

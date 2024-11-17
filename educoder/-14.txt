@@ -1,0 +1,27 @@
+"""一些物品，不知道有多少个，3个3个数的话，还多出2个；5个5个数则多出3个；
+7个7个数也会多出2个。输入一个正整数，从小到大依次输出所有不超过输入数字
+且满足条件的物品数量，有多个答案时每行输出一个。
+例如输入：200
+输出：
+23
+128
+"""
+n = int(input())
+##############Begin#####################
+
+def find_items(n):
+    solutions = []
+    for x in range(1, n + 1):
+        if x % 3 == 2 and x % 5 == 3 and x % 7 == 2:
+            solutions.append(x)
+    return solutions
+
+solutions = find_items(n)
+if not solutions:
+    print("No solution!")
+else:
+    for solution in solutions:
+        print(solution)
+
+
+##############End#####################

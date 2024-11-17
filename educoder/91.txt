@@ -1,0 +1,7 @@
+source_file = '/data/workspace/myshixun/step2/standard/exam.png'
+destination_file  = '/data/workspace/myshixun/output/temp_curve.png'
+
+destination_dir = os.path.dirname(destination_file)
+if not os.path.exists(destination_dir):
+    os.makedirs(destination_dir)
+shutil.copy(source_file, destination_file)

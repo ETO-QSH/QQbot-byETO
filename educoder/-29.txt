@@ -1,0 +1,20 @@
+
+from functools import reduce
+
+
+a = int(input())
+
+if a < 1000:
+    num = 1000
+else:
+    num = 99999
+
+lst = (lambda n:sorted(list(reduce(lambda r,x:r-set(range(x**2,n,x)) if x in r else r,range(2,int(n**0.5)+1),set(range(2,n+1))))))(num)
+
+ls = set()
+
+for i in lst:
+    if str(i) != str(i)[::-1] and int(str(i)[::-1]) in lst and i < a:
+        ls.add(i)
+
+print(*sorted(list(ls)))

@@ -1,0 +1,5 @@
+year, month, day = map(int, input().split('/'))
+days_in_month = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+if (year % 4 == 0 and year % 100 != 0) or (year % 400 == 0): days_in_month[1] = 29
+day_of_year = sum(days_in_month[:month - 1]) + day
+print(f'{year}年{month}月{day}日是{year}年第{day_of_year}天')

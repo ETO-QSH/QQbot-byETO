@@ -1,0 +1,18 @@
+def translate(word):
+    with open('step15/dicts.txt', 'r', encoding='utf-8') as file:
+        for line in file:
+            parts = line.split(' ', 1)
+            dict_word, dict_meaning = parts
+            if dict_word.lower() == word.lower():
+                return dict_meaning[2:-1]
+    return '自己猜'
+
+for word in input().replace(',', '').replace('.', '').replace('!', '').split():
+    if word.endswith("'s"):
+        print(f"{word[:-2].lower()} {translate(word[:-2])}")
+        print(f"{'is'} {translate('is')}")
+    elif word.endswith("n't"):
+        print(f"{word[:-3].lower()} {translate(word[:-3])}")
+        print(f"{'not'} {translate('not')}")
+    else:
+        print(f"{word.lower()} {translate(word)}")

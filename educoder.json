@@ -1,0 +1,163 @@
+{"educoder": {
+    "理论": {
+        "一": {
+            "1": ["./educoder/1.txt"],
+            "2": ["./educoder/2.txt"],
+            "3": ["./educoder/3.txt"],
+            "4": ["./educoder/4.txt"],
+            "5": ["./educoder/5.txt"],
+            "6": ["./educoder/6.txt"],
+            "7": ["./educoder/7.txt"],
+            "8": ["./educoder/8.txt"]
+        },
+        "二": {
+            "1": ["./educoder/9.txt"],
+            "2": ["./educoder/10.txt"],
+            "3": ["./educoder/11.txt"],
+            "4": ["./educoder/12.txt"],
+            "5": ["./educoder/13.txt"],
+            "6": ["./educoder/14.txt"],
+            "7": ["./educoder/15.txt"]
+        },
+        "三": {
+            "1": ["./educoder/16.txt"],
+            "2": ["./educoder/17.txt"],
+            "3": ["./educoder/18.txt"],
+            "4": ["./educoder/19.txt"],
+            "5": ["./educoder/20.txt"],
+            "6": ["./educoder/21.txt"],
+            "7": ["./educoder/22.txt"],
+            "8": ["./educoder/23.txt"],
+            "9": ["./educoder/24.txt"],
+            "10": ["./educoder/25.txt"],
+            "11": ["./educoder/26.txt"],
+            "12": ["./educoder/27.txt"],
+            "13": ["./educoder/28.txt"],
+            "14": ["./educoder/29.txt"],
+            "15": ["./educoder/30.txt"],
+            "16": ["./educoder/31.txt"]
+        },
+        "四": {
+            "1": ["./educoder/32.txt"],
+            "2": ["./educoder/33.txt"],
+            "3": ["./educoder/34.txt"],
+            "4": ["./educoder/35.txt"],
+            "5": ["./educoder/36.txt"],
+            "6": ["./educoder/37.txt"],
+            "7": ["./educoder/38.txt"],
+            "8": ["./educoder/39.txt"],
+            "9": ["./educoder/40.txt"],
+            "10": ["./educoder/41.txt"]
+        },
+        "五": {
+            "1": ["./educoder/42.txt"],
+            "2": ["./educoder/43.txt"],
+            "3": ["./educoder/44.txt"],
+            "4": ["./educoder/45.txt"],
+            "5": ["./educoder/46.txt"],
+            "6": ["./educoder/47.txt"],
+            "7": ["./educoder/48.txt"],
+            "8": ["./educoder/49.txt"],
+            "9": ["./educoder/50.txt"],
+            "10": ["./educoder/51.txt"],
+            "11": ["./educoder/52.txt"],
+            "12": ["./educoder/53.txt"],
+            "13": ["./educoder/54.txt"],
+            "14": ["./educoder/55.txt"],
+            "15": ["./educoder/56.txt"],
+            "16": ["./educoder/57.txt"]
+        },
+        "六": {
+            "1": ["./educoder/58.txt"],
+            "2": ["./educoder/59.txt"],
+            "3": ["./educoder/60.txt"],
+            "4": ["./educoder/61.txt"],
+            "5": ["./educoder/62.txt"],
+            "6": ["./educoder/63.txt"],
+            "7": ["./educoder/64.txt"],
+            "8": ["./educoder/65.txt"],
+            "9": ["./educoder/66.txt"]
+        },
+        "七": {
+            "1": ["./educoder/67.txt"],
+            "2": ["./educoder/68.txt"],
+            "3": ["./educoder/69.txt"],
+            "4": ["./educoder/70.txt"],
+            "5": ["./educoder/71.txt"],
+            "6": ["./educoder/72.txt"],
+            "7": ["./educoder/73.txt"],
+            "8": ["./educoder/74.txt"],
+            "9": ["./educoder/75.txt"],
+            "10": ["./educoder/76.txt"],
+            "11": ["./educoder/77.txt"],
+            "12": ["./educoder/78.txt"],
+            "13": ["./educoder/79.txt"],
+            "14": ["./educoder/80.txt"],
+            "15": ["./educoder/81.txt"]
+        },
+        "八": {
+            "1": ["./educoder/82.txt"],
+            "2": ["./educoder/83.txt"],
+            "3": ["./educoder/84.txt"],
+            "4": ["./educoder/85.txt"],
+            "5": ["./educoder/86.txt"],
+            "6": ["./educoder/87.txt"],
+            "7": ["./educoder/88.txt"],
+            "8": ["./educoder/89.txt"],
+            "9": ["./educoder/90.txt"]
+        },
+        "九": {
+            "1": ["./educoder/91.txt"],
+            "2": ["./educoder/92.txt"],
+            "3": ["./educoder/93.txt"],
+            "4": ["./educoder/94.txt"],
+            "5": ["./educoder/95.txt"]
+        }
+    },
+    "实践": {
+        "一": {
+            "1": ["./educoder/-1.txt"],
+            "2": ["./educoder/-2.txt"],
+            "3": ["./educoder/-3.txt"],
+            "4": ["./educoder/-4.txt"],
+            "5": ["./educoder/-5.txt"],
+            "6": ["./educoder/-6.txt"],
+            "7": ["./educoder/-7.txt"],
+            "8": ["./educoder/-8.txt"]
+        },
+        "二": {
+            "1": ["./educoder/-9.txt"],
+            "2": ["./educoder/-10.txt"],
+            "3": ["./educoder/-11.txt"],
+            "4": ["./educoder/-12.txt"],
+            "5": ["./educoder/-13.txt"],
+            "6": ["./educoder/-14.txt"],
+            "7": ["./educoder/-15.txt"],
+            "8": ["./educoder/-16.txt"],
+            "9": ["./educoder/-17.txt"]
+        },
+        "三": {
+            "1": ["./educoder/-18.txt"],
+            "2": ["./educoder/-19.txt"],
+            "3": ["./educoder/-20.txt"],
+            "4": ["./educoder/-21.txt"],
+            "5": ["./educoder/-22.txt"],
+            "6": ["./educoder/-23.txt"],
+            "7": ["./educoder/-24.txt"],
+            "8": ["./educoder/-25.txt"],
+            "9": ["./educoder/-26.txt"]
+        },
+        "四": {
+            "1": ["./educoder/-27.txt"],
+            "2": ["./educoder/-28.txt"],
+            "3": ["./educoder/-29.txt"],
+            "4": ["./educoder/-30.txt"],
+            "5": ["./educoder/-31.txt"],
+            "6": ["./educoder/-32.txt"],
+            "7": ["./educoder/-33.txt"],
+            "8": ["./educoder/-34.txt"],
+            "9": ["./educoder/-35.txt"],
+            "10": ["./educoder/-36.txt"]
+        }
+    }
+}}

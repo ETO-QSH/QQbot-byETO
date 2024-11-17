@@ -1,0 +1,14 @@
+def determine_class_time(time_str):
+    hour, minute = map(int, time_str.split(':'))
+    if 8 <= hour < 12 or (hour == 12 and minute <= 20):
+        return "早课"
+    elif 14 <= hour < 18 or (hour == 18 and minute <= 20):
+        return "中课"
+    elif 19 <= hour < 21 or (hour == 21 and minute <= 25):
+        return "晚课"
+    else:
+        return "休息"
+
+time_input = input()
+
+print(determine_class_time(time_input))

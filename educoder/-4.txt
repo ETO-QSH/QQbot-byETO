@@ -1,0 +1,8 @@
+ab = eval(input())
+cd = eval(input())
+
+ad = ab/2
+
+oa = (ad**2+cd**2)/(2*cd)
+
+print(f'{oa:.2f}')

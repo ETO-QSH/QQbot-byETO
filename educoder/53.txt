@@ -1,0 +1,6 @@
+m, n = input(), input()
+
+try:
+    print(f'index = {n.index(m)}')
+except:
+    print('Not Found')

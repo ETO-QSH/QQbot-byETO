@@ -1,0 +1,27 @@
+with open('step7/sale2019.csv','r',encoding='utf-8') as data2019:
+    sale2019 = [[line.strip().split(',')[0],float(line.strip().split(',')[1])] for line in data2019]
+with open('step7/sale2018.csv','r',encoding='utf-8') as data2018:
+    sale2018 = [[line.strip().split(',')[0],float(line.strip().split(',')[1])] for line in data2018]
+# 以上代码读取文件，不要修改。
+
+b_2018 = {item[0] for item in sale2018}
+b_2019 = {item[0] for item in sale2019}
+
+def brands():
+    print(sorted(b_2019)); print(sorted(b_2018))
+def common_brands():
+    print(sorted(list(b_2018 & b_2019)))
+def all_brands():
+    print(sorted(list(b_2018 | b_2019)))
+def new_brands():
+    print(sorted(list(b_2019 - b_2018)))
+def new_and_lost_brands():
+    print(sorted(list(b_2019 - b_2018) + list(b_2018 - b_2019)))
+
+choice = input()
+
+if choice == '1': brands()
+elif choice == '2': common_brands()
+elif choice == '3': all_brands()
+elif choice == '4': new_brands()
+elif choice == '5': new_and_lost_brands()

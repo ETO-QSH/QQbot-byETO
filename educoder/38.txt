@@ -1,0 +1,6 @@
+x = float(input())
+
+def fabs(x):
+    return x if x >= 0 else -x
+
+print(fabs(x))

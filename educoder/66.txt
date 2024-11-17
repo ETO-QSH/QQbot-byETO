@@ -1,0 +1,23 @@
+def read_file(file):
+    """接收文件名为参数，读取文件中的数据到字符串中，返回这个字符串"""
+    with open(file, 'r', encoding='utf-8') as text:
+        txt = text.read()
+    return txt
+
+def word_list(txt):
+    """接收字符串为参数，用空格替换字符串中所有标点符号，根据空格将字符串切分为列表
+    返回值为元素为单词的列表"""
+    txt = re.sub(r'[^\w\s]', ' ', txt)
+    return txt.split()
+
+def number_of_words(ls):
+    """接收一个以单词为元素的列表为参数，返回列表中单词数量，返回值为整型"""
+    return len(ls)
+
+if __name__ == '__main__':
+    import re
+    filename = input()                          # 读入文件名
+    text = read_file('step10/'+filename)        # 读取'step10/'文件夹中用户输入的文件名得到文件内容，存入text
+    words_list = word_list(text)                # 处理text,得到单词的列表
+    words_counts = number_of_words(words_list)  #统计单词列表word_list里的单词数
+    print(f'共有{words_counts}个单词')

@@ -1,0 +1,2 @@
+def solve(a, b): print(f'{a+b}\n{a-b}\n{a*b}')
+solve(int(input()), int(input()))

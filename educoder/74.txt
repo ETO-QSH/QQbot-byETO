@@ -1,0 +1,12 @@
+people_list = []
+
+for _ in range(int(input())):
+    name, age = input().strip().split()
+    person_dict = {"name": name, "age": int(age)}
+    people_list.append(person_dict)
+
+people_list_sorted_by_age = sorted(people_list, key=lambda x: x["age"])
+people_list_sorted_by_name = sorted(people_list, key=lambda x: x["name"])
+
+print(people_list_sorted_by_age)
+print(people_list_sorted_by_name)

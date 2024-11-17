@@ -1,0 +1,12 @@
+def encrypt_string(s):
+    encrypted = ""
+    for char in s:
+        if 'A' <= char <= 'Z':
+            encrypted += chr((ord(char) - ord('A') + 5) % 26 + ord('A'))
+        elif 'a' <= char <= 'z':
+            encrypted += chr((ord(char) - ord('a') + 3) % 26 + ord('a'))
+        else:
+            encrypted += char
+    return encrypted
+
+print(encrypt_string(input()))
