@@ -36,7 +36,7 @@ hitokoto = on_command("一言", rule=to_me())
 help = on_command("帮助", rule=to_me(), aliases={"-h", "help"})
 educoder = on_command("头歌", rule=to_me(), aliases={"编程", "作业", "Python", "python"})
 
-file_cmd = on_command(("图片", "启用"), rule=to_me(), aliases={("图片", "禁用")}, permission=SUPERUSER)
+file_cmd = on_command(("文件", "启用"), rule=to_me(), aliases={("文件", "禁用")}, permission=SUPERUSER)
 image_cmd = on_command(("图片", "启用"), rule=to_me(), aliases={("图片", "禁用")}, permission=SUPERUSER)
 video_cmd = on_command(("视频", "启用"), rule=to_me(), aliases={("视频", "禁用")}, permission=SUPERUSER)
 hitokoto_cmd = on_command(("一言", "启用"), rule=to_me(), aliases={("一言", "禁用")}, permission=SUPERUSER)
@@ -48,7 +48,7 @@ one_node = {"type": "node", "data": {"user_id": "3078491964", "nickname": "ETO",
 
 @at_me.handle()
 async def at_bot(event: Event):
-    if '<le>[at:qq=3078491964,name=ETO]</le>' in str(event.get_log_string()):
+    if '<le>[at:qq=3078491964' in str(event.get_log_string()) and str(event.get_message()) == '':
         await at_me.finish("꒰ঌ( ⌯' '⌯)໒꒱")
 
 @poke_notice.handle()
@@ -86,7 +86,7 @@ async def control(cmd: Tuple[str, str] = Command()):
         file_response = True
     elif cmd[1] == "禁用":
         file_response = False
-    await file_cmd.finish(f"**图片插件已{cmd[1]}**")
+    await file_cmd.finish(f"**文件插件已{cmd[1]}**")
 
 @image_cmd.handle()
 async def control(cmd: Tuple[str, str] = Command()):
