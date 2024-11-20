@@ -17,6 +17,7 @@ def get_refresh_token(username, password=None, key="Email-2373204754"):  # len(k
             try:
                 get = GetPixivToken(headless=True)
                 refresh_token = get.login(username=username, password=password)["refresh_token"]
+                data["token"][username] = {}
                 data["token"][username]["password"] = make_key_AES(key, password, 'Encrypt')
                 data["token"][username]["refresh_token"] = make_key_AES(key, refresh_token, 'Encrypt')
                 json.dump(data, file, indent=4)
@@ -229,7 +230,6 @@ def download_one_illust(pid, zip=False, dirs='.\\'):
 if __name__ == '__main__':
     aapi = AppPixivAPI()
     token = aapi.auth(refresh_token=get_refresh_token(username="2373204754@qq.com", password="******"))
-    print(download_page_illusts_for_tag(tag='arknights', sort='vip', page=0, ai=True, dirs='.\\abc', zip=True))
 else:
     aapi = AppPixivAPI()
     token = aapi.auth(refresh_token=get_refresh_token(username="2373204754@qq.com", password="******"))
