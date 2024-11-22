@@ -1,0 +1,24 @@
+import randA
+s = int(input())
+price = randA.randA(s)
+
+S_amount = float(input())
+
+fee_rate = 0.001
+
+max_hand = int(S_amount / (price * (1 + fee_rate))) // 100 * 100
+
+hands = []
+for hand in range(100, max_hand + 1, 100):
+    if price * hand * (1 + fee_rate) <= S_amount:
+        hands.append(hand)
+
+if hands:
+    print(hands)
+    actual_used = price * max_hand * (1 + fee_rate)
+    remaining_amount = S_amount - actual_used
+    print(f"使用{actual_used:.2f}买入{max_hand}股，账户余额为{remaining_amount:.2f}元。")
+else:
+    print("[]")
+    min_needed = price * 100 * (1 + fee_rate)
+    print(f"资金不够，至少需要{min_needed:.2f}元。")

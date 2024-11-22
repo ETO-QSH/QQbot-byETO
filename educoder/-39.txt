@@ -1,0 +1,17 @@
+import random
+
+def min_chop_times(price, seed):
+    random.seed(seed)
+    current_price = price 
+    chop_times = 0
+    
+    while current_price > 0:
+        chop = random.randint(0, price // 10)
+        current_price -= chop 
+        chop_times += 1 
+    
+    return chop_times
+
+price, seed = map(int, input().split(','))
+
+print(min_chop_times(price, seed))

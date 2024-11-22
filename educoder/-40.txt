@@ -1,0 +1,22 @@
+def isprime(n): 
+    if n < 2:
+        return False
+    for i in range(2, int(n**0.5)+1):
+        if n % i == 0:
+            return False
+    return True
+    
+
+n = int(input())
+
+prime_sum = 0
+prime_count = 0
+primes = []
+for num in range(n, 1, -1):
+    if isprime(num):
+        primes.append(num)
+        prime_sum += num
+        prime_count += 1
+        if prime_count == 10: 
+            break
+print('+'.join(map(str, primes[::-1]))+'='+str(prime_sum))

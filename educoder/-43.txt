@@ -1,0 +1,18 @@
+def find_insert_position(ls, n):
+    if n in ls:
+        return "Fail", ls
+    for i in range(len(ls)):
+        if n < ls[i]:
+            return i, ls[:i] + [n] + ls[i:]
+    return len(ls), ls + [n]
+
+ls = list(map(int, input().split()))
+n = int(input())
+
+position, new_ls = find_insert_position(ls, n)
+if position == "Fail":
+    print("Fail")
+    print(new_ls)
+else:
+    print(position)
+    print(new_ls)

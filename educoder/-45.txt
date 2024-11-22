@@ -1,0 +1,47 @@
+def determine_class_time(time_str):
+    hour, minute = map(int, time_str.split(':'))
+    if hour == 8 and (0 <= minute <= 45):
+        return "第1节课"
+
+    elif (hour == 8 and (50 <= minute <= 59)) or (hour == 9 and (0 <= minute <= 35)):
+        return "第2节课"
+
+    elif (hour == 9 and (55 <= minute <= 59)) or (hour == 10 and (0 <= minute <= 40)):
+        return "第3节课"
+
+    elif (hour == 10 and (45 <= minute <= 59)) or (hour == 11 and (0 <= minute <= 30)):
+        return "第4节课"
+
+    elif (hour == 11 and (35 <= minute <= 59)) or (hour == 12 and (0 <= minute <= 20)):
+        return "第5节课"
+
+    elif hour == 14 and (0 <= minute <= 45):
+        return "第6节课"
+
+    elif (hour == 14 and (50 <= minute <= 59)) or (hour == 15 and (0 <= minute <= 35)):
+        return "第7节课"
+
+    elif (hour == 15 and (40 <= minute <= 59)) or (hour == 16 and (0 <= minute <= 25)):
+        return "第8节课"
+
+    elif (hour == 16 and (45 <= minute <= 59)) or (hour == 17 and (0 <= minute <= 30)):
+        return "第9节课"
+
+    elif (hour == 17 and (35 <= minute <= 59)) or (hour == 18 and (0 <= minute <= 20)):
+        return "第10节课"
+
+    elif hour == 19 and (0 <= minute <= 45):
+        return "第11节课"
+
+    elif (hour == 19 and (50 <= minute <= 59)) or (hour == 20 and (0 <= minute <= 35)):
+        return "第12节课"
+
+    elif (hour == 20 and (40 <= minute <= 59)) or (hour == 21 and (0 <= minute <= 25)):
+        return "第13节课"
+        
+    else:
+        return "休息"
+
+time_input = input()
+
+print(determine_class_time(time_input))

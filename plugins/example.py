@@ -21,6 +21,12 @@ from nonebot.permission import SUPERUSER
 from nonebot.rule import to_me
 from nonebot.exception import NetworkError
 
+rps_ed = False
+dice_ed = False
+ing = on_message()
+
+rps_response = True
+dice_response = True
 file_response = True
 video_response = True
 image_response = True
@@ -29,6 +35,9 @@ educoder_response = True
 
 at_me = on_message(rule=to_me())
 poke_notice = on_notice(rule=to_me())
+rps = on_command("猜拳", rule=to_me())
+dice = on_command("骰子", rule=to_me())
+stop = on_command("安静", rule=to_me())
 file = on_command("文件", rule=to_me())
 image = on_command("图片", rule=to_me())
 video = on_command("视频", rule=to_me())
@@ -36,6 +45,8 @@ hitokoto = on_command("一言", rule=to_me())
 help = on_command("帮助", rule=to_me(), aliases={"-h", "help"})
 educoder = on_command("头歌", rule=to_me(), aliases={"编程", "作业", "Python", "python"})
 
+rps_cmd = on_command(("猜拳", "启用"), rule=to_me(), aliases={("猜拳", "禁用")}, permission=SUPERUSER)
+dice_cmd = on_command(("骰子", "启用"), rule=to_me(), aliases={("骰子", "禁用")}, permission=SUPERUSER)
 file_cmd = on_command(("文件", "启用"), rule=to_me(), aliases={("文件", "禁用")}, permission=SUPERUSER)
 image_cmd = on_command(("图片", "启用"), rule=to_me(), aliases={("图片", "禁用")}, permission=SUPERUSER)
 video_cmd = on_command(("视频", "启用"), rule=to_me(), aliases={("视频", "禁用")}, permission=SUPERUSER)
@@ -56,6 +67,13 @@ async def send_emoji(bot: Bot, event: Event):
     if event.notice_type == 'notify' and event.sub_type == 'poke':
         custom_faces = await bot.call_api("fetch_custom_face")
         await bot.send_group_msg(group_id=event.group_id, message=MessageSegment.image(file=custom_faces[0]))
+
+@stop.handle()
+async def control():
+    global rps_ed, dice_ed
+    rps_ed = False
+    dice_ed = False
+    await stop.finish(f"**猜拳骰子已关闭**")
 
 @help.handle()
 async def help_eto(event: Event):
@@ -78,6 +96,24 @@ async def help_eto(event: Event):
 如有需求和或者bug都可以反馈'''
     await help.finish(MessageSegment.at(event.get_user_id())+help_msg)
 
+
+@rps_cmd.handle()
+async def control(cmd: Tuple[str, str] = Command()):
+    global rps_response
+    if cmd[1] == "启用":
+        rps_response = True
+    elif cmd[1] == "禁用":
+        rps_response = False
+    await rps_cmd.finish(f"**猜拳插件已{cmd[1]}**")
+
+@dice_cmd.handle()
+async def control(cmd: Tuple[str, str] = Command()):
+    global dice_response
+    if cmd[1] == "启用":
+        dice_response = True
+    elif cmd[1] == "禁用":
+        dice_response = False
+    await dice_cmd.finish(f"**骰子插件已{cmd[1]}**")
 
 @file_cmd.handle()
 async def control(cmd: Tuple[str, str] = Command()):
@@ -270,6 +306,68 @@ async def got_location(bot: Bot, event: Event, matcher: Matcher, location: str =
         await hitokoto.finish("不是喵，这就单选题的说")
 
 
+@rps.handle()
+async def handle_function():
+    global rps_ed
+    if rps_response:
+        rps_ed = True
+        await rps.finish("喵喵是不会输的！")
+    else:
+        await rps.finish(f"猜拳插件已禁用，请联系管理员：{config.superusers}")
+
+@dice.handle()
+async def handle_function():
+    global dice_ed
+    if dice_response:
+        dice_ed = True
+        await dice.finish("喵喵是不会输的！")
+    else:
+        await dice.finish(f"骰子插件已禁用，请联系管理员：{config.superusers}")
+
+@ing.handle()
+async def handle_ing(bot: Bot, event: Event):
+    if rps_ed:
+        text = event.get_log_string()
+        if "<le>[rps:result=" in text:
+            match = re.search(r'<le>\[rps:result=(\d+)', text)
+            print(match.group(1))
+            if match:
+                #image_url = "https://i.pixiv.cat/img-master/img/2020/03/25/00/00/08/80334602_p0_master1200.jpg"
+                #xml = f"""<?xml version="1.0" encoding="UTF-8"?>
+                #          <msg>
+                #              <type>
+                #                  image
+                #              </type>
+                #              <image>
+                #                  <file>{image_url}</file>
+                #              </image>
+                #          </msg>"""
+                #
+                #send_msg_data = {
+                #    "type": "xml",
+                #    "data": {
+                #        "data": xml
+                #    }
+                #}
+                #
+                #await bot.call_api(api="send_msg", group_id=event.group_id, **send_msg_data)
+
+                ddd = {'1': '2', '2': '3', '3': '1'}
+                result = match.group(1)
+                rps_segment = MessageSegment.rps()
+                rps_segment.data = {'result': ddd[result]}
+                await hitokoto.finish(rps_segment)
+    if dice_ed:
+        text = event.get_log_string()
+        if "<le>[dice:result=" in text:
+            match = re.search(r'<le>\[dice:result=(\d+)', text)
+            print(match.group(1))
+            if match:
+                dice_segment = MessageSegment.dice()
+                dice_segment.data = {'result': '6'}
+                await hitokoto.finish(dice_segment)
+
+
 @video.handle()
 async def handle_function(bot: Bot, event: Event, matcher: Matcher, args: Message = CommandArg()):
     if video_response:
@@ -383,8 +481,7 @@ async def got_work_id(bot: Bot, event: Event, matcher: Matcher, args: str = ArgP
         elif mode in ["S3", "D4"]:
             if not args_dict:
                 raise ("Exception: 参数错误")
-        else:
-            UUID, args_save = uuid.uuid4(), copy.deepcopy(args_dict)
+        UUID, args_save = uuid.uuid4(), copy.deepcopy(args_dict)
         if mode == 'S1' and set(args_dict.keys()).issubset({"main"}):
             await image.send(MessageSegment.at(event.get_user_id()) + f"\n\n调用功能：{mod}\n捕获参数：{args_save}")
             text, msg = get_illust_details(pid=args_dict["main"]), copy.deepcopy(one_node)
@@ -397,9 +494,17 @@ async def got_work_id(bot: Bot, event: Event, matcher: Matcher, args: str = ArgP
             await bot.call_api(api="send_group_forward_msg", group_id=event.group_id, messages=[msg])
         elif mode == 'S3' and set(args_dict.keys()).issubset({"main", "mode", "date", "filter", "offset", "req_auth"}):
             await image.send(MessageSegment.at(event.get_user_id()) + f"\n\n调用功能：{mod}\n捕获参数：{args_save}")
-            text, msg = get_illust_ranking(**{key: value for key, value in args_dict.items() if key != "main"}), copy.deepcopy(one_node)
-            msg["data"]["content"].append({'type': 'text', 'data': {'text': str(text)}})
-            await bot.call_api(api="send_group_forward_msg", group_id=event.group_id, messages=[msg])
+            text, msgs = get_illust_ranking(**{key: value for key, value in args_dict.items() if key != "main"}), []
+            for QQlen in range((len(text)+2)//3):
+                if QQlen < 10:
+                    msg = copy.deepcopy(one_node)
+                    td = {}
+                    for i, j in enumerate(text[QQlen*3:(QQlen+1)*3]):
+                        if i < 3:
+                            td[f'{(QQlen+1)*3+(i+1)}st'] = j
+                    msg["data"]["content"].append({'type': 'text', 'data': {'text': str(td)}})
+                    msgs.append(copy.deepcopy(msg))
+            await bot.call_api(api="send_group_forward_msg", group_id=event.group_id, messages=msgs)
         elif mode == 'S4' and set(args_dict.keys()).issubset({"main", "target", "duration", "sort"}):
             await image.send(MessageSegment.at(event.get_user_id()) + f"\n\n调用功能：{mod}\n捕获参数：{args_save}")
             text, msg = search_information(search="name", word=args_dict.pop("main"), **args_dict), copy.deepcopy(one_node)
@@ -459,6 +564,8 @@ async def got_work_id(bot: Bot, event: Event, matcher: Matcher, args: str = ArgP
         else:
             raise ("Exception: 参数错误")
         shutil.rmtree(f'.\\data\\pixiv\\{UUID}')
+    except FileNotFoundError:
+        pass
     except FinishedException:
         traceback.print_exc()
     except:

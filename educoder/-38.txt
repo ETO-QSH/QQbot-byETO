@@ -1,0 +1,40 @@
+import random
+import string
+
+def generate_license_plates(seed, n):
+    random.seed(seed)
+    
+    prefixes = ['鄂A-', '鄂W-']
+    
+    up = [letter for letter in string.ascii_uppercase if letter not in ['I', 'O']]
+    
+    digits = string.digits
+    
+    plates = []
+    
+    for _ in range(n):
+        t = random.randint(0, 2)
+        
+        letters = random.choices(up, k=t)
+        
+        numbers = random.choices(digits, k=5-t)
+        
+        combined = letters + numbers
+        
+        random.shuffle(combined)
+        
+        s = ''.join(combined)
+        
+        prefix = random.choice(prefixes)
+        
+        plate = prefix + s
+        
+        plates.append(plate)
+    
+    return plates
+
+seed = int(input().strip())
+n = int(input().strip())
+
+plates = generate_license_plates(seed, n)
+print(plates)

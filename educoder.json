@@ -158,6 +158,18 @@
             "8": ["./educoder/-34.txt"],
             "9": ["./educoder/-35.txt"],
             "10": ["./educoder/-36.txt"]
+        },
+        "五": {
+            "1": ["./educoder/-37.txt"],
+            "2": ["./educoder/-38.txt"],
+            "3": ["./educoder/-39.txt"],
+            "4": ["./educoder/-40.txt"],
+            "5": ["./educoder/-41.txt"],
+            "6": ["./educoder/-42.txt"],
+            "7": ["./educoder/-43.txt"],
+            "8": ["./educoder/-44.txt"],
+            "9": ["./educoder/-45.txt"],
+            "10": ["./educoder/-46.txt"]
         }
     }
 }}

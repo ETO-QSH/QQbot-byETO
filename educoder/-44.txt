@@ -1,0 +1,9 @@
+
+ls = list(map(int, input().split()))
+n = int(input())
+
+if n not in ls:
+    print("NOT FOUND")
+else:
+    new_ls = [item for item in ls if item != n]
+    print(new_ls)

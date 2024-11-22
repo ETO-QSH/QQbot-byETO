@@ -1,0 +1,18 @@
+import re
+
+regex = r"^鄂A-(?:[0-9A-HJ-NP-Z]{5})$"
+
+def plate_number(num):
+    if len([i for i in num if ord(i) in range(65, 91)]) > 3:
+        return "Data Error!"
+    if re.match(regex, num):
+        for i in num[::-1]:
+            if i.isdigit():
+                if int(i)%2==0:
+                    return '双号通行'
+                else:
+                    return '单号通行'
+    else:
+        return "Data Error!"
+
+print(plate_number(input()))
