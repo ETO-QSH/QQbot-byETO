@@ -32,6 +32,7 @@ video_response = True
 image_response = True
 hitokoto_response = True
 educoder_response = True
+xingzheng_response = True
 
 at_me = on_message(rule=to_me())
 poke_notice = on_notice(rule=to_me())
@@ -44,6 +45,7 @@ video = on_command("视频", rule=to_me())
 hitokoto = on_command("一言", rule=to_me())
 help = on_command("帮助", rule=to_me(), aliases={"-h", "help"})
 educoder = on_command("头歌", rule=to_me(), aliases={"编程", "作业", "Python", "python"})
+xingzheng = on_command("形政", rule=to_me())
 
 rps_cmd = on_command(("猜拳", "启用"), rule=to_me(), aliases={("猜拳", "禁用")}, permission=SUPERUSER)
 dice_cmd = on_command(("骰子", "启用"), rule=to_me(), aliases={("骰子", "禁用")}, permission=SUPERUSER)
@@ -52,6 +54,7 @@ image_cmd = on_command(("图片", "启用"), rule=to_me(), aliases={("图片", "
 video_cmd = on_command(("视频", "启用"), rule=to_me(), aliases={("视频", "禁用")}, permission=SUPERUSER)
 hitokoto_cmd = on_command(("一言", "启用"), rule=to_me(), aliases={("一言", "禁用")}, permission=SUPERUSER)
 educoder_cmd = on_command(("头歌", "启用"), rule=to_me(), aliases={("头歌", "禁用")}, permission=SUPERUSER)
+xingzheng_cmd = on_command(("形政", "启用"), rule=to_me(), aliases={("形政", "禁用")}, permission=SUPERUSER)
 
 config = nonebot.get_driver().config
 one_node = {"type": "node", "data": {"user_id": "3078491964", "nickname": "ETO", "content": []}}
@@ -86,6 +89,7 @@ async def help_eto(event: Event):
 3. [视频]--发送列表中的本地视频
 4. [一言]--发送本地库中的语句
 5. [头歌]--发送py编程作业的答案
+6. [形政]--发送形政考试答案
 
 你可以通过这些关键字访问功能
 例如：`ETO 一言`
@@ -159,6 +163,15 @@ async def control(cmd: Tuple[str, str] = Command()):
     elif cmd[1] == "禁用":
         educoder_response = False
     await educoder_cmd.finish(f"**头歌插件已{cmd[1]}**")
+
+@xingzheng_cmd.handle()
+async def control(cmd: Tuple[str, str] = Command()):
+    global xingzheng_response
+    if cmd[1] == "启用":
+        xingzheng_response = True
+    elif cmd[1] == "禁用":
+        xingzheng_response = False
+    await xingzheng_cmd.finish(f"**形政插件已{cmd[1]}**")
 
 
 def random_file(DIR):
@@ -281,6 +294,41 @@ async def got_location(bot: Bot, event: Event, matcher: Matcher, location: str =
         pass
     except:
         await educoder.finish(f"没有`{location}`数据，原因不外乎我没写我没传你打错了，请先检查输入")
+
+@xingzheng.handle()
+async def handle_function(bot: Bot, event: Event, matcher: Matcher, args: Message = CommandArg()):
+    if xingzheng_response:
+        if args.extract_plain_text():
+            matcher.set_arg("location", args)
+    else:
+        await xingzheng.finish(f"形政插件已禁用，请联系管理员：{config.superusers}")
+
+@xingzheng.got("location", prompt="请给予题干片段")
+async def got_location(bot: Bot, event: Event, matcher: Matcher, location: str = ArgPlainText()):
+    date = read_json("形式与政策.json")
+    found_dictionaries = []
+    for key, items in date.items():
+        for item in items:
+            for i in items[item]:
+                if location in i["Body"]:
+                    found_dictionaries.append({item: i})
+    try:
+        messages = []
+        msg = copy.deepcopy(one_node)
+        msg["data"]["content"].append({"type": "at", "data": {'qq': str(event.get_user_id()), 'name': event.sender.nickname}})
+        messages.append(msg)
+        msg = copy.deepcopy(one_node)
+        msg["data"]["content"].append({'type': 'text', 'data': {'text': location}})
+        messages.append(msg)
+        for item in found_dictionaries:
+            msg = copy.deepcopy(one_node)
+            msg["data"]["content"].append({'type': 'text', 'data': {'text': str(item)}})
+            messages.append(msg)
+        await bot.call_api(api="send_group_forward_msg", group_id=event.group_id, messages=messages)
+    except FinishedException:
+        pass
+    except:
+        await xingzheng.finish(f"没有`{location}`数据，原因不外乎我没写我没传你打错了，请先检查输入")
 
 
 @hitokoto.handle()
