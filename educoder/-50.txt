@@ -1,0 +1,34 @@
+
+#不允许修改。fopen函数打开文件，并返回包含文件数据一个列表ls，
+def fopen(name):
+    ls=[]
+    with open(name,'r',encoding = 'UTF-8') as f:
+       for i in f.readlines()[1:]:
+           ls.append(i.strip().split(',',maxsplit=1))
+    return ls
+
+lt = fopen('step5/survey.csv')   #不允许修改，打开题目文件，并将返回的数据列表赋值给lt
+
+D = {'程序员': 0, '程序爱好者': 0, '程序初学者': 0, '编程相关者': 0, '非程序员': 0, '空白': 0}
+
+for item in lt:
+    if item[1] == 'I am a developer by profession':
+        D['程序员'] += 1
+    elif item[1] == 'I code primarily as a hobby':
+        D['程序爱好者'] += 1
+    elif item[1] == 'I am a student who is learning to code':
+        D['程序初学者'] += 1
+    elif item[1] == '"I am not primarily a developer, but I write code sometimes as part of my work"':
+        D['编程相关者'] += 1
+    elif item[1] == '"I used to be a developer by profession, but no longer am"':
+        D['非程序员'] += 1
+    elif item[1] == 'NA':
+        D['空白'] += 1
+    
+s = input()
+if s == '记录':
+    print(f'总计:{len(lt)}条')
+elif s in D.keys():
+    print(f'{s}:{D[s]}条')
+else:
+    print('错误输入')

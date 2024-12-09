@@ -1,0 +1,12 @@
+lst = []
+
+while True:
+    s = input()
+    if s == '':
+        break
+    else:
+        lst.append(s.split('-'))
+
+lst = sorted(lst, key=lambda i: (i[0], i[1], i[2]))
+
+print('-'.join(lst[0]))

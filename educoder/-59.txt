@@ -1,0 +1,28 @@
+def fopen(name):
+    with open(name, 'r', encoding  = 'utf-8') as f:
+        return [i.strip().split(',') for i in f.readlines()]
+
+ls = fopen('step4/menu.csv')
+# 以上模板不允许修改
+
+data_dict = {}
+for index, line in enumerate(ls[1:], start=1):
+    parts = line
+    category = parts[0]
+    item = parts[1]
+    data_dict[index] = [category, item]
+
+n = input()
+
+if n in [v[0] for v in data_dict.values()]:
+    count = 0
+    for key, value in data_dict.items():
+        if value[0] == n:
+            print(f"{key} : {' '.join(value)}")
+            count += 1
+    print(count)
+
+elif n.isdigit() and int(n) in data_dict:
+    print(' '.join(data_dict[int(n)]))
+else:
+    print(f"{n} Not Found")

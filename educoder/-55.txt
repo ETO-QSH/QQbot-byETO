@@ -1,0 +1,15 @@
+D = {}
+l = []
+lst = map(int, input().split())
+for i in lst:
+    if i in D:
+        D[i] += 1
+    else:
+        D[i] = 1
+for i, j in D.items():
+    if i == j:
+        l.append(i)
+if not l:
+    print(-1)
+else:
+    print(sorted(l)[-1])

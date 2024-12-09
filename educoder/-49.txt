@@ -1,0 +1,12 @@
+l = list(map(int, input().split()))
+j, o, t = [], [], []
+[o.append(i) if i%2 == 0 else j.append(i) for i in l]
+if len(j) == len(o):
+    j.sort()
+    o.sort()
+    for i in range(len(o)):
+        t.append(o[i])
+        t.append(j[i])
+    print(t)
+else:
+    print('ERROR')

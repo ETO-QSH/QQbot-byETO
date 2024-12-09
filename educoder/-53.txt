@@ -1,0 +1,10 @@
+def lcp(strs):
+    ss = min(strs, key=len)
+    for i in range(len(ss)):
+        for oss in strs:
+            if oss[i] != ss[i]:
+                return ss[:i]
+    return ss
+    
+s = lcp(input().split())
+print(s if s else 'NOT FOUND')

@@ -1,0 +1,14 @@
+n = int(input())
+if n > 0:
+    lst = []
+    for i in range(n):
+        a, b, c = input().split()
+        a = a[:4]+'*'*7+a[11:]
+        b = [i for i in b]
+        b[1] = '*'
+        b = ''.join(b)
+        c = c[:3]+'*'*4+c[7:]
+        lst.append([a, b, c])
+    print(lst)
+else:
+    print('ERROR')

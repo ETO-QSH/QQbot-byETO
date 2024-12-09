@@ -170,6 +170,26 @@
             "8": ["./educoder/-44.txt"],
             "9": ["./educoder/-45.txt"],
             "10": ["./educoder/-46.txt"]
+        },
+        "六": {
+            "1": ["./educoder/-47.txt"],
+            "2": ["./educoder/-48.txt"],
+            "3": ["./educoder/-49.txt"],
+            "4": ["./educoder/-50.txt"],
+            "5": ["./educoder/-51.txt"],
+            "6": ["./educoder/-52.txt"],
+            "7": ["./educoder/-53.txt"],
+            "8": ["./educoder/-54.txt"],
+            "9": ["./educoder/-55.txt"]
+        },
+        "七": {
+            "1": ["./educoder/-56.txt"],
+            "2": ["./educoder/-57.txt"],
+            "3": ["./educoder/-58.txt"],
+            "4": ["./educoder/-59.txt"],
+            "5": ["./educoder/-60.txt"],
+            "6": ["./educoder/-61.txt"],
+            "7": ["./educoder/-62.txt"]
         }
     }
 }}

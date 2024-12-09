@@ -1,0 +1,30 @@
+def fopen():
+    '''本函数不允许修改，功能说明：
+    fopen()读取文件并返回二维列表l,数据格式为：
+    [['Rank', 'Name', 'Pay', 'Salary/Winnings', 'Endorsements', 'Sport', 'Year'],
+     ['1', 'Lionel Messi', '$127 M', '$92 M', '$35 M', 'Soccer', '2019']
+     ['2', 'Cristiano Ronaldo', '$109 M', '$65 M', '$44 M', 'Soccer', '2019'], ...]
+    '''
+    l=[]
+    with open('step8/2012-19sport.csv','r',encoding='UTF-8') as f:
+        for i in f.readlines():
+            l.append(i.strip().strip('#').split(','))
+    return l
+
+data = fopen()
+
+year = input()
+
+found = False
+sports = set()
+for item in data[1:]:
+    if item[6] == year:
+        found = True
+        sports.add(item[5])
+
+if found:
+    sports = sorted(sports)
+    for index, sport in enumerate(sports, start=1):
+        print(f"{index} {sport}")
+else:
+    print(f"No Record of {year}")

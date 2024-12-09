@@ -1,0 +1,10 @@
+D = {}
+lst = input().split()
+for i in lst:
+    if i in D:
+        D[i] += 1
+    else:
+        D[i] = 1
+for i, j in D.items():
+    if j % 2 == 1:
+        print(i)

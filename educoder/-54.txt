@@ -1,0 +1,12 @@
+D = {}
+lst = map(int, input().split())
+l = []
+for i in lst:
+    if i in D:
+        D[i] += 1
+    else:
+        D[i] = 1
+for i, j in D.items():
+    if j > 1:
+        l.append(i)
+print(sorted(l))

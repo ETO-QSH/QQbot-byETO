@@ -1,0 +1,31 @@
+def read_file(filename):
+    """接收文件名为参数，读取文件内容为一个字符串
+    返回这个字符串。
+    """
+    with open(filename, 'r') as file:  # 只读模式打开文件
+        text = file.read()  # 文件内容读入到一个字符串
+    return text  # 返回字符串
+
+
+def replace_txt(text):  #完成该函数
+    """接收一个字符串为参数，将其中的特殊字符替换为空格
+    将字符串根据空格切分为列表，返回这个列表
+    将字符串中特殊字符替换为空格，注意要赋值回去
+    根据空格将字符串切分为列表返回
+    """
+    import re
+    # 将特殊字符替换为空格，但保留单引号
+    text = re.sub(r"[!\"#\$%&()*+,./:;<=>?@[^_`{|}~\n]+", " ", text)
+    # 将单引号内的内容视为一个单词
+    text = re.sub(r"'(.*?)'", r"\1", text)
+    # 将连续的数字视为一个单词
+    text = re.sub(r"(\d+)", r"1", text)
+    # 根据空格将字符串切分为列表返回
+    return text.split()
+
+
+if __name__ == '__main__':
+    name = input()                 # 输入文件名
+    txt = read_file('step7/'+name)      # 读文件，返回字符串
+    result = replace_txt(txt)  # 字符串替换和切分
+    print(len(result))             # 输出列表长度，即单词数量

@@ -1,0 +1,42 @@
+import string
+
+def Read_report(name):  #本函数已定义完整
+    #读取报告原文，返回字符串，本函数勿修改。
+    with open(name,'r',encoding='UTF-8') as f:
+        return f.read()
+
+
+#下方为待完成区域
+def Short(s):  
+    #定义函数，判断字符串s中是否包含数字字符
+    return any(char.isdigit() for char in s)
+    
+
+def Sign_delete(s):  
+    #定义函数，将报告字符串中的所有中文标点符号替换成英文空格，以便后续分割列表。
+    sign = ['＂', '＃', '＄', '％', '＆', '＇', '（', '）', '＊', '＋', '，', '－', '／', '：', '；', '＜', '＝', '＞', '＠', '［', '＼', '］', '＾', '＿', '｀', '｛', '｜', '｝', '～', '｟', '｠', '｢', '｣', '､', '\u3000', '、', '〃', '〈', '〉', '《', '》', '「', '」', '『', '』', '【', '】', '〔', '〕', '〖', '〗', '〘', '〙', '〚', '〛', '〜', '〝', '〞', '〟', '〰', '〾', '〿', '–', '—', '‘', '’', '‛', '“', '”', '„', '‟', '…', '‧', '﹏', '﹑', '﹔', '·', '．', '！', '？', '｡', '。']
+    # 继续完成函数定义
+    for char in sign:
+        s = s.replace(char, ' ')
+    return s
+
+
+name = 'step6/2024政府工作报告.txt'
+report  = Read_report(name)   #读取报告文件
+report  = Sign_delete(report) #替换报告中符号，以便后续分隔
+key = input()  #输入关键词
+# 下方继续后续流程设计代码
+
+report = report.split()
+if key == '数字短句':
+    for s in report:
+        if Short(s):
+            print(s)
+else:
+    lst = [s for s in report if key in s]
+    if lst:
+        print(len(lst))
+        for i in lst:
+            print(i)
+    else:
+        print('未找到关键词')

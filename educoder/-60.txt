@@ -1,0 +1,40 @@
+import re, string
+from collections import Counter
+
+def fopen(name):
+    with open(name, 'r', encoding='utf-8') as f:
+        return f.read()
+
+s = fopen('step5/12.txt')
+
+def process_text(novel, key, ex):
+    novel = novel.lower()
+    novel = re.sub(r'[{}]+'.format(re.escape(string.punctuation)), ' ', novel)
+    novel = re.sub(r'\s+', ' ', novel)
+
+    ls = novel.split()
+
+    if key == 'count_1':
+        dict_word = Counter(ls)
+    elif key == 'count_2':
+        dict_word = {word: freq for word, freq in Counter(ls).items() if len(word) >= 2}
+    elif key == 'count_3':
+        dict_word = {word: freq for word, freq in Counter(ls).items() if len(word) >= 4 and word not in ex}
+    else:
+        print("Error")
+        return 0
+
+    sorted_dict_word = sorted(dict_word.items(), key=lambda x: x[1], reverse=True)
+
+    if key == 'count_1' or key == 'count_2':
+        for word, freq in sorted_dict_word[:30]:
+            print(f"{word} {freq}")
+    elif key == 'count_3':
+        for word, freq in sorted_dict_word[:7]:
+            print(f"{word} {freq}")
+
+ex = ['that', 'with', 'said', 'have', 'which', 'this', 'your', 'will', 'from', 'what', 'then', 'count', 'they', 'were', 'would', 'when', 'well', 'there', 'know', 'more', 'young', 'them', 'only', 'madame', 'replied', 'time', 'their', 'some', 'like', 'very', 'father', 'into', 'could', 'should', 'than', 'shall', 'been']
+
+key = input()
+
+process_text(s, key, ex)
