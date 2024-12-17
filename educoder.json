@@ -190,6 +190,12 @@
             "5": ["./educoder/-60.txt"],
             "6": ["./educoder/-61.txt"],
             "7": ["./educoder/-62.txt"]
+        },
+        "八": {
+            "1": ["./educoder/-63.txt"],
+            "2": ["./educoder/-64.txt"],
+            "3": ["./educoder/-65.txt"],
+            "4": ["./educoder/-66.txt"]
         }
     }
 }}

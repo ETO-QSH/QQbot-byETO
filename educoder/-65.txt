@@ -1,0 +1,29 @@
+with open('step4/wuhan2021s1.csv','r',encoding = 'utf-8') as f:
+    ls = [i.strip().split(',') for i in f.readlines()[1:]]
+    n = input()
+    exist = False
+    for j in ls:
+        if j[1] == n:
+            exist = True
+    if n == '规模升序':
+        ls1 = sorted(ls,key = lambda x:float(x[5]))
+        for i in ls1:
+            print(f'{" ".join(i)}')
+    elif n == '规模降序':
+        ls1 = sorted(ls,key = lambda x:float(x[5]),reverse = True)
+        for i in ls1:
+            print(f'{" ".join(i)}')
+    elif n == '总规模':
+        ls2 = []
+        for i in ls:
+            ls2.append(float(i[5]))
+        print(f'{sum(ls2):.2f}平方米')
+    elif exist:
+        ls3 =[]
+        for x in ls:
+            if x[1] == n:
+                ls3.append(float(x[5]))
+                print(f'{" ".join(x)}')
+        print(f'{sum(ls3):.2f}平方米')
+    else:
+        print('错误输入')

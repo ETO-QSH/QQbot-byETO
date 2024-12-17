@@ -35,6 +35,7 @@ educoder_response = True
 xingzheng_response = True
 
 at_me = on_message(rule=to_me())
+dance = on_message(rule=to_me())
 poke_notice = on_notice(rule=to_me())
 rps = on_command("猜拳", rule=to_me())
 dice = on_command("骰子", rule=to_me())
@@ -70,6 +71,12 @@ async def send_emoji(bot: Bot, event: Event):
     if event.notice_type == 'notify' and event.sub_type == 'poke':
         custom_faces = await bot.call_api("fetch_custom_face")
         await bot.send_group_msg(group_id=event.group_id, message=MessageSegment.image(file=custom_faces[0]))
+
+@dance.handle()
+async def send_emoji(bot: Bot, event: Event):
+    if '跳舞' in str(event.get_message()):
+        custom_faces = await bot.call_api("fetch_custom_face")
+        await bot.send_group_msg(group_id=event.group_id, message=MessageSegment.image(file=custom_faces[1]))
 
 @stop.handle()
 async def control():

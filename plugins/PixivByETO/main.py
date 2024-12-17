@@ -232,7 +232,6 @@ if __name__ == '__main__':
     token = aapi.auth(refresh_token=get_refresh_token(username="2373204754@qq.com", password="******"))
 else:
     aapi = AppPixivAPI()
-    token = aapi.auth(refresh_token=get_refresh_token(username="2373204754@qq.com", password="******"))
 
     # download_one_illust(96348927)
     # download_all_illusts_for_ranking()

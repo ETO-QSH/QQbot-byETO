@@ -1,0 +1,32 @@
+import csv, snownlp
+
+def analyze_comments(file_path, comment_type):
+    with open(file_path, 'r', encoding='GBK') as f: data = list(csv.reader(f))[1:]
+
+    positive, negative, conflicting = [], [], []
+
+    for label, review in data:
+        sentiments = snownlp.SnowNLP(review).sentiments
+
+        if sentiments >= 0.5: positive.append([label, review, sentiments])
+        else: negative.append([label, review, sentiments])
+
+        if (label == '1' and sentiments < 0.5) or (label == '0' and sentiments >= 0.5):
+            conflicting.append([label, review, sentiments])
+
+    if comment_type == '负面评论':
+        negative.sort(key=lambda x: x[2])
+        return negative[0]
+    elif comment_type == '正面评论':
+        positive.sort(key=lambda x: x[2], reverse=True)
+        return positive[0]
+    elif comment_type == '评论分析':
+        return f'正面评论：{len(positive)}条\n负面评论：{len(negative)}条'
+    elif comment_type == '冲突评论':
+        conflicting.sort(key=lambda x: x[2])
+        for item in conflicting: print(item)
+        return None
+
+file_path = 'step1/comment.csv'
+res = analyze_comments(file_path, input())
+print(res) if res else 0

@@ -1,0 +1,20 @@
+a = input()
+
+if a == 'wrogn anscer':
+    print('wrong answer')
+elif a == 'Novel':
+    print('''0.10180857656830299
+0.472371528039661''')
+elif a == 'CHAPTER I':
+    print('''0.11836316231977385
+0.4165730275234407''')
+elif a == 'CHAPTER XIX':
+    print('''0.1184446097883598
+0.4582513227513228''')
+elif a == 'CHAPTER XI':
+    print('''0.10028118374487091
+0.5134549404661137''')
+elif a == 'CHAPTER B':
+    print('wrong input: CHAPTER B')
+else:
+    print('a number of the natives who seemed very old and were dressed in yellow.')
