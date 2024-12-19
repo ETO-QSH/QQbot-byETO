@@ -6,6 +6,7 @@ import re
 import shutil
 import traceback
 import uuid
+from itertools import chain
 from typing import Tuple
 from plugins.PixivByETO.main import *
 
@@ -181,8 +182,9 @@ async def control(cmd: Tuple[str, str] = Command()):
     await xingzheng_cmd.finish(f"**形政插件已{cmd[1]}**")
 
 
-def random_file(DIR):
-    return os.path.join(DIR, random.choice([f for f in os.listdir(DIR) if os.path.isfile(os.path.join(DIR, f))]))
+def random_file(DIRS):
+    files = list(chain(*[[os.path.join(dir, f) for f in os.listdir(dir) if os.path.isfile(os.path.join(dir, f))] for dir in DIRS]))
+    return random.choice(files)
 
 def read_json(JSON):
     with open(JSON, 'r', encoding='utf-8') as file:
@@ -484,13 +486,14 @@ async def handle_function(bot: Bot, event: Event, matcher: Matcher, args: Messag
 async def got_location(bot: Bot, event: Event, matcher: Matcher, location: str = ArgPlainText()):
     try:
         if location == '本地':
-            await image.finish(MessageSegment.at(event.get_user_id()) + MessageSegment.image(random_file(f"D:\Images\图片")))
+            await image.finish(MessageSegment.at(event.get_user_id()) + MessageSegment.image(random_file([r"D:\Images\图片", r"D:\Desktop\Desktop\new-pic"])))
         elif location == "pixiv":
             if event.get_user_id() in config.superusers:
                 matcher.got("mode")
             else:
-                await image.send("悠着点用，接口那边也是我写的，纲领是能跑就行，暂时不支持异步，而且因为需要代理，以及使用我的账号，可能出现一些问题。如果需要良好的下载环境，可以在我的github中找到独立的pixiv接口")
+                # await image.send("悠着点用，接口那边也是我写的，纲领是能跑就行，暂时不支持异步，而且因为需要代理，以及使用我的账号，可能出现一些问题。如果需要良好的下载环境，可以在我的github中找到独立的pixiv接口")
                 # await image.finish("测试阶段权限还未开启")
+                await image.finish("刚禁的别想了的说")
                 matcher.got("mode")
         else:
             raise ("Exception: 未知源")
