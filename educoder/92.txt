@@ -1,7 +1,39 @@
-source_file = '/data/workspace/myshixun/step3/standard/exam.png'
-destination_file  = '/data/workspace/myshixun/output/stu.png'
+import matplotlib.pyplot as plt
 
-destination_dir = os.path.dirname(destination_file)
-if not os.path.exists(destination_dir):
-    os.makedirs(destination_dir)
-shutil.copy(source_file, destination_file)
+plt.rcParams['font.sans-serif'] = ['SimSun']
+plt.rcParams['axes.unicode_minus'] = False
+
+def plot_dos(file):
+    """绘制曲线，颜色按题目要求顺序"""
+    colors = ['blue', 'green', 'red', 'purple', 'gray', 'Navy', 'violet', 'Gold', 'Black']
+    with open(file, 'r') as f:
+        data = [list(map(float, line.strip().split())) for line in f]
+    x = [row[0] for row in data]
+    for i in range(1, len(data[0])):
+        plt.plot(x, [row[i] for row in data], color=colors[i-1])
+
+def plot_label():
+    """在 x 值为 0 处绘制平行于 y 轴直线，线型为破折线，红色，宽度为1；
+    x 轴加标签 “E-EV(ev)”，y 轴加标签 “DOS”
+    增加图名 “BaTiO3 分态密度曲线图”，中文字体'SimSun'
+    """
+    plt.axvline(x=0, color='red', linestyle='--', linewidth=1)
+    plt.xlabel("E-Ev(eV)")
+    plt.ylabel("DOS")
+    plt.title("BaTiO3 分态密度曲线图")
+
+if __name__ == '__main__':
+    plot_dos('step3/DOS_SUM.txt')
+    plot_label()
+    plt.savefig("output/stu.png")
+    plt.show()
+
+
+
+# source_file = '/data/workspace/myshixun/step3/standard/exam.png'
+# destination_file  = '/data/workspace/myshixun/output/stu.png'
+#
+# destination_dir = os.path.dirname(destination_file)
+# if not os.path.exists(destination_dir):
+#     os.makedirs(destination_dir)
+# shutil.copy(source_file, destination_file)

@@ -1,7 +1,27 @@
-source_file = '/data/workspace/myshixun/step6/standard/exam.png'
-destination_file  = '/data/workspace/myshixun/output/program.png'
+import matplotlib.pyplot as plt
 
-destination_dir = os.path.dirname(destination_file)
-if not os.path.exists(destination_dir):
-    os.makedirs(destination_dir)
-shutil.copy(source_file, destination_file)
+plt.rcParams['font.sans-serif'] = ['SimSun']
+plt.rcParams['axes.unicode_minus'] = False
+
+labels = ['C语言', 'Python', 'Java', 'C++语言', 'C#', 'VB.net', 'Javascript', 'PHP', 'Other']
+sizes = [16.2, 12.1, 11.7, 7.6, 4.7, 4.0, 2.0, 1.8, 39.9]
+
+explode = [0] * len(labels)
+explode[labels.index('Python')] = 0.1
+
+fig, ax = plt.subplots()
+wedges, texts, autotexts = ax.pie(sizes, labels=labels, explode=explode, autopct='%1.1f%%', startangle=90, labeldistance=1.1, pctdistance=0.7, shadow=True)
+
+plt.legend(wedges, labels, loc='upper left', bbox_to_anchor=(-0.3, 1.1))
+plt.savefig("output/program.png")
+plt.show()
+
+
+
+# source_file = '/data/workspace/myshixun/step6/standard/exam.png'
+# destination_file  = '/data/workspace/myshixun/output/program.png'
+#
+# destination_dir = os.path.dirname(destination_file)
+# if not os.path.exists(destination_dir):
+#     os.makedirs(destination_dir)
+# shutil.copy(source_file, destination_file)

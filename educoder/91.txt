@@ -1,7 +1,25 @@
-source_file = '/data/workspace/myshixun/step2/standard/exam.png'
-destination_file  = '/data/workspace/myshixun/output/temp_curve.png'
+import matplotlib.pyplot as plt
+plt.rcParams['font.sans-serif'] = ['SimSun']
+plt.rcParams['axes.unicode_minus'] = False
+with open('step2/9.1 某月温度.txt','r') as f:
+    ls = [x.strip().split() for x in f]
+x = [int(i[0]) for i in ls]
+h = [int(i[1]) for i in ls]
+l = [int(i[2]) for i in ls]
+plt.plot(x, h, marker='o', color='r')
+plt.plot(x, l, marker='*', color='b')
+plt.axhline(0, color='b', linestyle='--')
+plt.xticks(list(range(1, 32)))
+plt.yticks(list(range(-10, 26, 5)))
+plt.title('9月温度曲线图')
+plt.savefig("output/temp_curve.png")
 
-destination_dir = os.path.dirname(destination_file)
-if not os.path.exists(destination_dir):
-    os.makedirs(destination_dir)
-shutil.copy(source_file, destination_file)
+
+
+# source_file = '/data/workspace/myshixun/step2/standard/exam.png'
+# destination_file  = '/data/workspace/myshixun/output/temp_curve.png'
+#
+# destination_dir = os.path.dirname(destination_file)
+# if not os.path.exists(destination_dir):
+#     os.makedirs(destination_dir)
+# shutil.copy(source_file, destination_file)

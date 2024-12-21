@@ -1,7 +1,19 @@
-source_file = '/data/workspace/myshixun/step5/standard/exam.png'
-destination_file  = '/data/workspace/myshixun/output/exam.png'
+import matplotlib.pyplot as plt
+with open('step5/DosOfBaTiO3.txt','r') as f:
+    ls=[x.strip().split() for x in f]
+x=[float(x[0]) for x in ls]
+y=[float(x[1]) for x in ls]
+plt.plot(x,y,color='r',linewidth=1)
+plt.xlabel('Energy(Ha)')
+plt.ylabel('Density of States(electrons/Ha)')
+plt.savefig("output/exam.png")
 
-destination_dir = os.path.dirname(destination_file)
-if not os.path.exists(destination_dir):
-    os.makedirs(destination_dir)
-shutil.copy(source_file, destination_file)
+
+
+# source_file = '/data/workspace/myshixun/step5/standard/exam.png'
+# destination_file  = '/data/workspace/myshixun/output/exam.png'
+#
+# destination_dir = os.path.dirname(destination_file)
+# if not os.path.exists(destination_dir):
+#     os.makedirs(destination_dir)
+# shutil.copy(source_file, destination_file)
