@@ -1,4 +1,5 @@
-﻿import copy
+﻿import ast
+import copy
 import json
 import os
 import random
@@ -22,9 +23,12 @@ from nonebot.permission import SUPERUSER
 from nonebot.rule import to_me
 from nonebot.exception import NetworkError
 
+rps_dict = {}
+dice_dict = {}
 rps_ed = False
 dice_ed = False
 ing = on_message()
+recall = on_notice()
 
 rps_response = True
 dice_response = True
@@ -45,9 +49,10 @@ file = on_command("文件", rule=to_me())
 image = on_command("图片", rule=to_me())
 video = on_command("视频", rule=to_me())
 hitokoto = on_command("一言", rule=to_me())
-help = on_command("帮助", rule=to_me(), aliases={"-h", "help"})
-educoder = on_command("头歌", rule=to_me(), aliases={"编程", "作业", "Python", "python"})
 xingzheng = on_command("形政", rule=to_me())
+educoder = on_command("头歌", rule=to_me(), aliases={"Python", "python"})
+
+help = on_command("帮助", rule=to_me(), aliases={"-h", "help"})
 
 rps_cmd = on_command(("猜拳", "启用"), rule=to_me(), aliases={("猜拳", "禁用")}, permission=SUPERUSER)
 dice_cmd = on_command(("骰子", "启用"), rule=to_me(), aliases={("骰子", "禁用")}, permission=SUPERUSER)
@@ -66,6 +71,19 @@ one_node = {"type": "node", "data": {"user_id": "3078491964", "nickname": "ETO",
 async def at_bot(event: Event):
     if '<le>[at:qq=3078491964' in str(event.get_log_string()) and str(event.get_message()) == '':
         await at_me.finish("꒰ঌ( ⌯' '⌯)໒꒱")
+
+@recall.handle()
+async def sbRecall(bot: Bot, event: Event):
+    msg_id = str(ast.literal_eval(event.get_event_description())['message_id'])
+    if msg_id in rps_dict:
+        if rps_dict[msg_id] != None:
+            await bot.delete_msg(message_id=rps_dict[msg_id])
+        del rps_dict[msg_id]
+    if msg_id in dice_dict:
+        if dice_dict[msg_id] != None:
+            await bot.delete_msg(message_id=dice_dict[msg_id])
+        del dice_dict[msg_id]
+    await recall.finish()
 
 @poke_notice.handle()
 async def send_emoji(bot: Bot, event: Event):
@@ -368,7 +386,7 @@ async def handle_function():
     global rps_ed
     if rps_response:
         rps_ed = True
-        await rps.finish("喵喵是不会输的！")
+        await rps.finish("拥有败者食尘，喵喵是不会输的！")
     else:
         await rps.finish(f"猜拳插件已禁用，请联系管理员：{config.superusers}")
 
@@ -377,7 +395,7 @@ async def handle_function():
     global dice_ed
     if dice_response:
         dice_ed = True
-        await dice.finish("喵喵是不会输的！")
+        await dice.finish("拥有败者食尘，喵喵是不会输的！")
     else:
         await dice.finish(f"骰子插件已禁用，请联系管理员：{config.superusers}")
 
@@ -387,7 +405,6 @@ async def handle_ing(bot: Bot, event: Event):
         text = event.get_log_string()
         if "<le>[rps:result=" in text:
             match = re.search(r'<le>\[rps:result=(\d+)', text)
-            print(match.group(1))
             if match:
                 #image_url = "https://i.pixiv.cat/img-master/img/2020/03/25/00/00/08/80334602_p0_master1200.jpg"
                 #xml = f"""<?xml version="1.0" encoding="UTF-8"?>
@@ -409,11 +426,24 @@ async def handle_ing(bot: Bot, event: Event):
                 #
                 #await bot.call_api(api="send_msg", group_id=event.group_id, **send_msg_data)
 
+                ID = re.search(r'Message (\d+)', text).group(1)
                 ddd = {'1': '2', '2': '3', '3': '1'}
                 result = match.group(1)
-                rps_segment = MessageSegment.rps()
-                rps_segment.data = {'result': ddd[result]}
-                await hitokoto.finish(rps_segment)
+                rps_dict[ID] = None
+
+                while ID in rps_dict:
+                    rps_segment = Message(MessageSegment.rps())
+                    msg_id = await bot.send_msg(message_type="group", group_id=event.group_id, message=rps_segment)
+                    get_msg = await bot.get_msg(message_id=msg_id['message_id'])
+                    true_result = get_msg['message'][0]['data']['result']
+                    if true_result == ddd[result]:
+                        rps_dict[ID] = msg_id['message_id']
+                        break
+                    else:
+                        await bot.delete_msg(message_id=msg_id['message_id'])
+                await hitokoto.finish()
+
+    # 这里懒得改了，写法和上面一样
     if dice_ed:
         text = event.get_log_string()
         if "<le>[dice:result=" in text:
