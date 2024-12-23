@@ -41,6 +41,7 @@ xingzheng_response = True
 
 at_me = on_message(rule=to_me())
 dance = on_message(rule=to_me())
+reaction = on_message(rule=to_me())
 poke_notice = on_notice(rule=to_me())
 rps = on_command("猜拳", rule=to_me())
 dice = on_command("骰子", rule=to_me())
@@ -74,22 +75,34 @@ async def at_bot(event: Event):
 
 @recall.handle()
 async def sbRecall(bot: Bot, event: Event):
-    msg_id = str(ast.literal_eval(event.get_event_description())['message_id'])
-    if msg_id in rps_dict:
-        if rps_dict[msg_id] != None:
-            await bot.delete_msg(message_id=rps_dict[msg_id])
-        del rps_dict[msg_id]
-    if msg_id in dice_dict:
-        if dice_dict[msg_id] != None:
-            await bot.delete_msg(message_id=dice_dict[msg_id])
-        del dice_dict[msg_id]
-    await recall.finish()
+    try:
+        msg_id = str(ast.literal_eval(event.get_event_description())['message_id'])
+        if msg_id in rps_dict:
+            if rps_dict[msg_id] != None:
+                await bot.delete_msg(message_id=rps_dict[msg_id])
+            del rps_dict[msg_id]
+        if msg_id in dice_dict:
+            if dice_dict[msg_id] != None:
+                await bot.delete_msg(message_id=dice_dict[msg_id])
+            del dice_dict[msg_id]
+        await recall.finish()
+    except Exception as e:
+        await recall.finish()
 
 @poke_notice.handle()
 async def send_emoji(bot: Bot, event: Event):
     if event.notice_type == 'notify' and event.sub_type == 'poke':
         custom_faces = await bot.call_api("fetch_custom_face")
         await bot.send_group_msg(group_id=event.group_id, message=MessageSegment.image(file=custom_faces[0]))
+
+@reaction.handle()
+async def reply(bot: Bot, event: Event):
+    if '<le>[reply:id=' in event.get_log_string():
+        ID = re.search(r'reply:id=(\d+)', event.get_log_string()).group(1)
+        # 这里这个api存在问题，下次再改
+        # await bot.set_group_reaction(group_id=event.group_id, message_id=ID, code='2', is_add=True)
+        await reaction.finish('看不懂喵 ฅ( ̳• · • ̳ฅ)')
+    await reaction.finish()
 
 @dance.handle()
 async def send_emoji(bot: Bot, event: Event):
