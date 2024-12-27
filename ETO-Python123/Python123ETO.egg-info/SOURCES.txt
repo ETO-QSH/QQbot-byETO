@@ -3,7 +3,9 @@ README.rst
 setup.py
 Python123ETO/__init__.py
 Python123ETO/data.py
+Python123ETO/info.py
 Python123ETO/main.py
+Python123ETO/send.py
 Python123ETO.egg-info/PKG-INFO
 Python123ETO.egg-info/SOURCES.txt
 Python123ETO.egg-info/dependency_links.txt
