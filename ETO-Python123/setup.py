@@ -5,7 +5,7 @@ with open("README.rst", "r", encoding='utf-8') as f:
   long_description = f.read()
 
 setup(name='Python123ETO',  # 包名
-      version='1.0.5',  # 版本号
+      version='1.0.6',  # 版本号
       description='A small example package',
       long_description_content_type='text/markdown',
       long_description=long_description,
