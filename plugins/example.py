@@ -35,6 +35,7 @@ dice_response = True
 file_response = True
 video_response = True
 image_response = True
+gaoshu_response = True
 hitokoto_response = True
 educoder_response = True
 xingzheng_response = True
@@ -51,7 +52,8 @@ image = on_command("图片", rule=to_me())
 video = on_command("视频", rule=to_me())
 hitokoto = on_command("一言", rule=to_me())
 xingzheng = on_command("形政", rule=to_me())
-educoder = on_command("头歌", rule=to_me(), aliases={"Python", "python"})
+educoder = on_command("头歌", rule=to_me())
+gaoshu = on_command("高数", rule=to_me())
 
 help = on_command("帮助", rule=to_me(), aliases={"-h", "help"})
 
@@ -63,6 +65,7 @@ video_cmd = on_command(("视频", "启用"), rule=to_me(), aliases={("视频", "
 hitokoto_cmd = on_command(("一言", "启用"), rule=to_me(), aliases={("一言", "禁用")}, permission=SUPERUSER)
 educoder_cmd = on_command(("头歌", "启用"), rule=to_me(), aliases={("头歌", "禁用")}, permission=SUPERUSER)
 xingzheng_cmd = on_command(("形政", "启用"), rule=to_me(), aliases={("形政", "禁用")}, permission=SUPERUSER)
+gaoshu_cmd = on_command(("高数", "启用"), rule=to_me(), aliases={("高数", "禁用")}, permission=SUPERUSER)
 
 config = nonebot.get_driver().config
 one_node = {"type": "node", "data": {"user_id": "3078491964", "nickname": "ETO", "content": []}}
@@ -92,8 +95,17 @@ async def sbRecall(bot: Bot, event: Event):
 @poke_notice.handle()
 async def send_emoji(bot: Bot, event: Event):
     if event.notice_type == 'notify' and event.sub_type == 'poke':
-        custom_faces = await bot.call_api("fetch_custom_face")
-        await bot.send_group_msg(group_id=event.group_id, message=MessageSegment.image(file=custom_faces[0]))
+        if str(event.group_id) in ["797784653", "981535936"] and gaoshu_response:
+            Information = read_json(r'理工学堂\高等数学.json')
+            files = find_paths(r'D:\Desktop\Desktop\高等数学 (ID_42)', 'png')
+            file = random.choice(files)
+            file_name = os.path.basename(file).split('.')[0]
+            path_name = os.path.basename(os.path.dirname(os.path.dirname(file))).split()[0]
+            info = Information[path_name][file_name][0]
+            await poke_notice.finish(MessageSegment.image(file) + f"发送 `ETO 高数 {info}` 获取答案")
+        else:
+            custom_faces = await bot.call_api("fetch_custom_face")
+            await bot.send_group_msg(group_id=event.group_id, message=MessageSegment.image(file=custom_faces[0]))
 
 @reaction.handle()
 async def reply(bot: Bot, event: Event):
@@ -212,6 +224,15 @@ async def control(cmd: Tuple[str, str] = Command()):
         xingzheng_response = False
     await xingzheng_cmd.finish(f"**形政插件已{cmd[1]}**")
 
+@gaoshu_cmd.handle()
+async def control(cmd: Tuple[str, str] = Command()):
+    global gaoshu_response
+    if cmd[1] == "启用":
+        gaoshu_response = True
+    elif cmd[1] == "禁用":
+        gaoshu_response = False
+    await gaoshu_cmd.finish(f"**高数插件已{cmd[1]}**")
+
 
 def random_file(DIRS):
     files = list(chain(*[[os.path.join(dir, f) for f in os.listdir(dir) if os.path.isfile(os.path.join(dir, f))] for dir in DIRS]))
@@ -242,6 +263,14 @@ def work_paths(PATH):
             file_name = os.path.basename(file_path)
             data[file_name] = file_path
     return data
+
+def find_paths(directory, endswith):
+    lst = []
+    for root, dirs, files in os.walk(directory):
+        for file in files:
+            if file.endswith(endswith):
+                lst.append(os.path.join(root, file))
+    return lst
 
 def organize_pixiv_data(paths):
     def H2C(s):
@@ -335,6 +364,7 @@ async def got_location(bot: Bot, event: Event, matcher: Matcher, location: str =
     except:
         await educoder.finish(f"没有`{location}`数据，原因不外乎我没写我没传你打错了，请先检查输入")
 
+
 @xingzheng.handle()
 async def handle_function(bot: Bot, event: Event, matcher: Matcher, args: Message = CommandArg()):
     if xingzheng_response:
@@ -370,6 +400,29 @@ async def got_location(bot: Bot, event: Event, matcher: Matcher, location: str =
     except:
         await xingzheng.finish(f"没有`{location}`数据，原因不外乎我没写我没传你打错了，请先检查输入")
 
+
+@gaoshu.handle()
+async def handle_function(bot: Bot, event: Event, matcher: Matcher, args: Message = CommandArg()):
+    if gaoshu_response:
+        if args.extract_plain_text():
+            matcher.set_arg("location", args)
+    else:
+        await gaoshu.finish(f"高数插件已禁用，请联系管理员：{config.superusers}")
+
+@gaoshu.got("location", prompt="请给予更多信息：{理论|实践}课-第{N}章-第{n}题\n例：`实践课第三章第9题`")
+async def got_location(bot: Bot, event: Event, matcher: Matcher, location: str = ArgPlainText()):
+    data, result = read_json(r'理工学堂\高等数学.json'), None
+    for chapter_key, chapter_data in data.items():
+        for question_key, question_data in chapter_data.items():
+            if question_data[0] == location:
+                result = question_data[1]
+                break
+        if result: break
+    if gaoshu_response:
+        if result:
+            await gaoshu.finish(MessageSegment.at(event.get_user_id()) + f"\n高数 {location}：{result}")
+        else:
+            await gaoshu.finish(f"好好复制喵 ~")
 
 @hitokoto.handle()
 async def handle_function(bot: Bot, event: Event, matcher: Matcher, args: Message = CommandArg()):
