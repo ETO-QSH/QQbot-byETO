@@ -122,7 +122,7 @@ async def reply(bot: Bot, event: Event):
             get_msg = await bot.get_msg(message_id=ID)
             if len(get_msg['message']) == 1 and get_msg['message'][0]['type'] == 'image':
                 url = get_msg['message'][0]['data']['url']
-                file_path = f'reaction_temp\\{event.group_id}_{event.get_user_id()}_{datetime.now().strftime("%H%M%S")}.jpg'
+                file_path = f'data\\reaction_temp\\{event.group_id}_{event.get_user_id()}_{datetime.now().strftime("%H%M%S")}.jpg'
                 try: download_image(url, file_path)
                 except Exception as e: await reaction.finish('图片下载失败。。。')
                 c = search_TM(file_path)
