@@ -127,7 +127,7 @@ async def reply(bot: Bot, event: Event):
                 except Exception as e: await reaction.finish('图片下载失败。。。')
                 c = search_TM(file_path)
                 os.remove(file_path)
-                await reaction.finish(c)
+                await reaction.finish(MessageSegment.at(event.get_user_id()) + c)
         await reaction.finish('看不懂喵 ฅ( ̳• · • ̳ฅ)')
     await reaction.finish()
 
@@ -397,7 +397,7 @@ def search_TM(image_path):
             for chapter_key, chapter_data in Information.items():
                 for question_key, question_data in chapter_data.items():
                     if question_data[0] == info: result = question_data[1]; break
-                if result: return f'相似度: {max_s*100:.2f}%\n编号: {info}  答案: {result}'
+                if result: return f'\n相似度: {max_s*100:.2f}%\n编号: {info}  答案: {result}'
         else: return '相似度过低，未成功匹配结果！'
     except Exception as e:
         return '相似度过低，未成功匹配结果！'
