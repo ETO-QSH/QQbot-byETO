@@ -2,6 +2,7 @@
 import copy
 import json
 import os
+import cv2
 import random
 import re
 import shutil
@@ -9,6 +10,10 @@ import traceback
 import uuid
 from itertools import chain
 from typing import Tuple
+
+import numpy as np
+import requests
+
 from plugins.PixivByETO.main import *
 
 import nonebot
@@ -73,7 +78,7 @@ one_node = {"type": "node", "data": {"user_id": "3078491964", "nickname": "ETO",
 
 @at_me.handle()
 async def at_bot(event: Event):
-    if '<le>[at:qq=3078491964' in str(event.get_log_string()) and str(event.get_message()) == '':
+    if '<le>[at:qq=3078491964' in str(event.get_log_string()) and str(event.get_message()) == '' and 'reply:id=' not in str(event.get_log_string()):
         await at_me.finish("꒰ঌ( ⌯' '⌯)໒꒱")
 
 @recall.handle()
@@ -113,6 +118,16 @@ async def reply(bot: Bot, event: Event):
         ID = re.search(r'reply:id=(\d+)', event.get_log_string()).group(1)
         # 这里这个api存在问题，下次再改
         # await bot.set_group_reaction(group_id=event.group_id, message_id=ID, code='2', is_add=True)
+        if str(event.get_message()).strip() == '搜题':
+            get_msg = await bot.get_msg(message_id=ID)
+            if len(get_msg['message']) == 1 and get_msg['message'][0]['type'] == 'image':
+                url = get_msg['message'][0]['data']['url']
+                file_path = f'reaction_temp\\{event.group_id}_{event.get_user_id()}_{datetime.now().strftime("%H%M%S")}.jpg'
+                try:
+                    download_image(url, file_path)
+                except Exception as e:
+                    await reaction.finish('图片下载失败。。。')
+                await reaction.finish(search_TM(file_path))
         await reaction.finish('看不懂喵 ฅ( ̳• · • ̳ฅ)')
     await reaction.finish()
 
@@ -249,6 +264,10 @@ def read_txt(TXT):
         data = file.read()
     return data
 
+def cv_imread(filePath):
+    cv_img = cv2.imdecode(np.fromfile(filePath, dtype=np.uint8), -1)
+    return cv_img
+
 def create_zip(paths, z_name):
     paths = [os.path.dirname(os.path.dirname(path))+'.zip' for path in paths]
     with zipfile.ZipFile(z_name, 'w') as zipf:
@@ -272,6 +291,9 @@ def find_paths(directory, endswith):
             if file.endswith(endswith):
                 lst.append(os.path.join(root, file))
     return lst
+
+def download_image(url, file_path):
+    os.system(f'curl -k "{url}" -o "{os.path.abspath(file_path)}"')
 
 def organize_pixiv_data(paths):
     def H2C(s):
@@ -340,6 +362,43 @@ def structure_node_t(data_structure, event):
                 for image in images:
                     msgs.append({'type': 'image', 'data': {'file': image}})
     return msgs
+
+def find_max_similarity_TM(image_path, folder_lst):
+    image = cv2.imread(image_path)
+    hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
+    mask = cv2.inRange(hsv, np.array([0, 0, 251]), np.array([255, 4, 255]))
+    contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    x, y, w, h = cv2.boundingRect(max(contours, key=cv2.contourArea))
+    target_roi = image[y:y+h, x:x+w]
+    max_s, max_p = 0, None
+    for image_path in folder_lst:
+        image = cv_imread(image_path)
+        image_height, image_width = image.shape[:2]
+        if w > image_width or h > image_height:
+            scale = min(image_width / w, image_height / h)
+            rtr = cv2.resize(target_roi, (int(w * scale), int(h * scale)), interpolation=cv2.INTER_AREA)
+        else: rtr = cv2.resize(target_roi, (w, h), interpolation=cv2.INTER_AREA)
+        if len(image.shape) == 3: image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+        if len(rtr.shape) == 3: rtr = cv2.cvtColor(rtr, cv2.COLOR_BGR2GRAY)
+        max_i = np.max(cv2.matchTemplate(image, rtr, cv2.TM_CCOEFF_NORMED))
+        if max_i > max_s: max_s, max_p = max_i, image_path
+    return max_s, max_p
+
+def search_TM(image_path):
+    Information = read_json(r'理工学堂\高等数学.json')
+    files = find_paths(r'D:\Desktop\Desktop\高等数学 (ID_42)', 'png')
+    max_s, max_p = find_max_similarity_TM(image_path, files)
+    if max_s > 0.5:
+        file_name = os.path.basename(max_p).split('.')[0]
+        path_name = os.path.basename(os.path.dirname(os.path.dirname(max_p))).split()[0]
+        info = Information[path_name][file_name][0]
+        Information, result = read_json(r'理工学堂\高等数学.json'), None
+        for chapter_key, chapter_data in Information.items():
+            for question_key, question_data in chapter_data.items():
+                if question_data[0] == info: result = question_data[1]; break
+            if result: return f'相似度: {max_s*100:.2f}%\n编号: {info}  答案: {result}'
+    else: return '相似度过低，未成功匹配结果！'
+    os.remove(image_path)
 
 
 @educoder.handle()
