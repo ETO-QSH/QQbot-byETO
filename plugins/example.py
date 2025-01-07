@@ -123,11 +123,11 @@ async def reply(bot: Bot, event: Event):
             if len(get_msg['message']) == 1 and get_msg['message'][0]['type'] == 'image':
                 url = get_msg['message'][0]['data']['url']
                 file_path = f'reaction_temp\\{event.group_id}_{event.get_user_id()}_{datetime.now().strftime("%H%M%S")}.jpg'
-                try:
-                    download_image(url, file_path)
-                except Exception as e:
-                    await reaction.finish('图片下载失败。。。')
-                await reaction.finish(search_TM(file_path))
+                try: download_image(url, file_path)
+                except Exception as e: await reaction.finish('图片下载失败。。。')
+                c = search_TM(file_path)
+                os.remove(file_path)
+                await reaction.finish(c)
         await reaction.finish('看不懂喵 ฅ( ̳• · • ̳ฅ)')
     await reaction.finish()
 
@@ -387,18 +387,20 @@ def find_max_similarity_TM(image_path, folder_lst):
 def search_TM(image_path):
     Information = read_json(r'理工学堂\高等数学.json')
     files = find_paths(r'D:\Desktop\Desktop\高等数学 (ID_42)', 'png')
-    max_s, max_p = find_max_similarity_TM(image_path, files)
-    if max_s > 0.5:
-        file_name = os.path.basename(max_p).split('.')[0]
-        path_name = os.path.basename(os.path.dirname(os.path.dirname(max_p))).split()[0]
-        info = Information[path_name][file_name][0]
-        Information, result = read_json(r'理工学堂\高等数学.json'), None
-        for chapter_key, chapter_data in Information.items():
-            for question_key, question_data in chapter_data.items():
-                if question_data[0] == info: result = question_data[1]; break
-            if result: return f'相似度: {max_s*100:.2f}%\n编号: {info}  答案: {result}'
-    else: return '相似度过低，未成功匹配结果！'
-    os.remove(image_path)
+    try:
+        max_s, max_p = find_max_similarity_TM(image_path, files)
+        if max_s > 0.5:
+            file_name = os.path.basename(max_p).split('.')[0]
+            path_name = os.path.basename(os.path.dirname(os.path.dirname(max_p))).split()[0]
+            info = Information[path_name][file_name][0]
+            Information, result = read_json(r'理工学堂\高等数学.json'), None
+            for chapter_key, chapter_data in Information.items():
+                for question_key, question_data in chapter_data.items():
+                    if question_data[0] == info: result = question_data[1]; break
+                if result: return f'相似度: {max_s*100:.2f}%\n编号: {info}  答案: {result}'
+        else: return '相似度过低，未成功匹配结果！'
+    except Exception as e:
+        return '相似度过低，未成功匹配结果！'
 
 
 @educoder.handle()
