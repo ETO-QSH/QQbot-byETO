@@ -102,7 +102,7 @@ async def send_emoji(bot: Bot, event: Event):
     if event.notice_type == 'notify' and event.sub_type == 'poke':
         if str(event.group_id) in ["797784653", "981535936"] and gaoshu_response:
             Information = read_json(r'理工学堂\高等数学.json')
-            files = find_paths(r'D:\Desktop\Desktop\高等数学 (ID_42)', 'png')
+            files = find_paths(r'理工学堂\高等数学 (ID_42)', 'png')
             file = random.choice(files)
             file_name = os.path.basename(file).split('.')[0]
             path_name = os.path.basename(os.path.dirname(os.path.dirname(file))).split()[0]
@@ -386,7 +386,7 @@ def find_max_similarity_TM(image_path, folder_lst):
 
 def search_TM(image_path):
     Information = read_json(r'理工学堂\高等数学.json')
-    files = find_paths(r'D:\Desktop\Desktop\高等数学 (ID_42)', 'png')
+    files = find_paths(r'理工学堂\高等数学 (ID_42)', 'png')
     try:
         max_s, max_p = find_max_similarity_TM(image_path, files)
         if max_s > 0.5:
