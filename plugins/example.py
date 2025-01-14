@@ -413,7 +413,7 @@ async def handle_function(bot: Bot, event: Event, matcher: Matcher, args: Messag
 
 @educoder.got("location", prompt="请给予更多信息：{理论|实践}课-第{N}章-第{n}题\n例：`实践课第三章第9题`")
 async def got_location(bot: Bot, event: Event, matcher: Matcher, location: str = ArgPlainText()):
-    date = read_json("educoder.json")
+    date = read_json("other\\educoder.json")
     match = re.search(r"(理论|实践)课.*第([\u4e00-\u9fa5]+)章.*第(\d+)题", location)
     try:
         msg1, msg2, msg3, file = copy.deepcopy(one_node), copy.deepcopy(one_node), copy.deepcopy(one_node), date["educoder"][match.group(1)][match.group(2)][match.group(3)][0]
@@ -437,7 +437,7 @@ async def handle_function(bot: Bot, event: Event, matcher: Matcher, args: Messag
 
 @xingzheng.got("location", prompt="请给予题干片段")
 async def got_location(bot: Bot, event: Event, matcher: Matcher, location: str = ArgPlainText()):
-    date = read_json("形式与政策.json")
+    date = read_json("other\\形式与政策.json")
     found_dictionaries = []
     for key, items in date.items():
         for item in items:
@@ -496,7 +496,7 @@ async def handle_function(bot: Bot, event: Event, matcher: Matcher, args: Messag
 
 @hitokoto.got("location", prompt=f'请选择句子类型：{list(read_json("hitokoto.json")["sentences"].keys())}')
 async def got_location(bot: Bot, event: Event, matcher: Matcher, location: str = ArgPlainText()):
-    date = read_json("hitokoto.json")
+    date = read_json("other\\hitokoto.json")
     try:
         if "+" in location:
             await hitokoto.finish(MessageSegment.at(event.get_user_id()) + '\n\n' + str(random.choice(date["sentences"][location[:-1]])))
@@ -591,15 +591,15 @@ async def handle_function(bot: Bot, event: Event, matcher: Matcher, args: Messag
     else:
         await video.finish(f"视频插件已禁用，请联系管理员：{config.superusers}")
 
-@video.got("location", prompt="\n\n".join(["请提供视频序号："] + [f'Serial:{i} | name:{item["name"]} | tag:{item["tag"]}' for i, item in read_json("video.json")["midishow"].items()]))
+@video.got("location", prompt="\n\n".join(["请提供视频序号："] + [f'Serial:{i} | name:{item["name"]} | tag:{item["tag"]}' for i, item in read_json("other\\video.json")["midishow"].items()]))
 async def got_location(bot: Bot, event: Event, matcher: Matcher, location: str = ArgPlainText()):
     try:
         if "+" in location:
-            locate = read_json("video.json")["midishow"][location[:-1]]
+            locate = read_json("other\\video.json")["midishow"][location[:-1]]
             await video.send(MessageSegment.at(event.get_user_id()) + '\n' + f"更多信息：{str(locate)}")
             await video.finish(MessageSegment.video(locate["url"]))
         else:
-            locate = read_json("video.json")["midishow"][location]
+            locate = read_json("other\\video.json")["midishow"][location]
             await video.send(MessageSegment.at(event.get_user_id()))
             await video.finish(MessageSegment.video(locate["url"]))
     except FinishedException:
