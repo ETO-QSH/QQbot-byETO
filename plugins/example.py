@@ -496,18 +496,39 @@ async def handle_function(bot: Bot, event: Event, matcher: Matcher, args: Messag
     else:
         await respect.finish(f"问候插件已禁用，请联系管理员：{config.superusers}")
 
-@respect.got("location", prompt="格式参考：[干员[行为[语言]]]")
+@respect.got("location", prompt="格式参考：[干员[行为&语言]]")
 async def got_location(bot: Bot, event: Event, matcher: Matcher, location: str = ArgPlainText()):
     link, data = None, read_json("PRTS/prts.json")
-    if location in data:
-        for index, item in data[location].items():
-            if item['title'] == '问候':
-                link = 'https:' + item['voice_link']['日语'].split('?')[0]
+    loc = location.split()
+    if loc[0] in data:
+        for index, item in data[loc[0]].items():
+            if len(loc) == 1:
+                if item['title'] == '问候':
+                    link = 'https:' + item['voice_link']['日语'].split('?')[0]
+                    break
+            elif len(loc) == 2:
+                if item['title'] == loc[1]:
+                    link = 'https:' + item['voice_link']['日语'].split('?')[0]
+                    break
+                elif loc[1] in item['voice_link'].keys():
+                    link = 'https:' + item['voice_link'][loc[1]].split('?')[0]
+                    break
+            elif len(loc) == 3:
+                if item['title'] in loc[1:]:
+                    if item['title'] == loc[1] and loc[2] in item['voice_link'].keys():
+                        link = 'https:' + item['voice_link'][loc[2]].split('?')[0]
+                        break
+                    elif item['title'] == loc[2] and loc[1] in item['voice_link'].keys():
+                        link = 'https:' + item['voice_link'][loc[1]].split('?')[0]
+                        break
+            else:
                 break
         if link:
             await respect.finish(MessageSegment.record(link))
+        else:
+            await respect.finish(f"参数`{loc[1:]}`错误捏~")
     else:
-        await respect.finish(f"没有`{location}`干员哦~")
+        await respect.finish(f"没有`{loc[0]}`干员哦~")
 
 
 @gaoshu.handle()
