@@ -31,3 +31,20 @@ if response.status_code == 200:
 else:
     print(f'请求失败，状态码：{response.status_code}')
 
+
+response = requests.get('https://prts.wiki/w/干员一览')
+if response.status_code == 200:
+    tree = html.fromstring(response.content)
+    filter_data = tree.xpath('//*[@id="filter-data"]')
+    filter_datas = {}
+
+    for items in filter_data:
+        for item in items:
+            filter_datas[item.get('data-zh')] = {key[5:]: value for key, value in item.items() if key.startswith('data-')}
+
+    print(filter_datas)
+
+    # print(voice_table_html)
+
+else:
+    print(f'请求失败，状态码：{response.status_code}')
