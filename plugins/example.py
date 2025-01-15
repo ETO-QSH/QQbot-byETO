@@ -12,6 +12,7 @@ from itertools import chain
 from typing import Tuple
 
 import numpy as np
+from curl_cffi import requests
 import requests
 
 from plugins.PixivByETO.main import *
@@ -77,8 +78,9 @@ one_node = {"type": "node", "data": {"user_id": "3078491964", "nickname": "ETO",
 
 
 @at_me.handle()
-async def at_bot(event: Event):
+async def at_bot(bot: Bot, event: Event):
     if '<le>[at:qq=3078491964' in str(event.get_log_string()) and str(event.get_message()) == '' and 'reply:id=' not in str(event.get_log_string()):
+        await bot.send_msg(message_type="group", group_id=event.group_id, message=[{"type": "record", "data": {"file": "https://torappu.prts.wiki/assets/audio/voice/char_180_amgoat/cn_001.wav?filename=%E4%BB%BB%E5%91%BD%E5%8A%A9%E7%90%86.wav"}}])
         await at_me.finish("꒰ঌ( ⌯' '⌯)໒꒱")
 
 @recall.handle()
@@ -293,6 +295,13 @@ def find_paths(directory, endswith):
     return lst
 
 def download_image(url, file_path):
+    # response = requests.get(url, verify=False)
+    # if response.status_code == 200:
+    #     with open(os.path.abspath(file_path), 'wb') as file:
+    #         file.write(response.content)
+    #     print(f"文件已保存到 {os.path.abspath(file_path)}")
+    # else:
+    #     print(f"请求失败，状态码：{response.status_code}")
     os.system(f'curl -k "{url}" -o "{os.path.abspath(file_path)}"')
 
 def organize_pixiv_data(paths):
@@ -494,7 +503,7 @@ async def handle_function(bot: Bot, event: Event, matcher: Matcher, args: Messag
     else:
         await hitokoto.finish(f"一言插件已禁用，请联系管理员：{config.superusers}")
 
-@hitokoto.got("location", prompt=f'请选择句子类型：{list(read_json("hitokoto.json")["sentences"].keys())}')
+@hitokoto.got("location", prompt='请选择句子类型：' + str(list(read_json("other\\hitokoto.json")["sentences"].keys())))
 async def got_location(bot: Bot, event: Event, matcher: Matcher, location: str = ArgPlainText()):
     date = read_json("other\\hitokoto.json")
     try:
