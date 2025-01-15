@@ -6,11 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="bfba40d5-3395-4613-9310-15eca2e5b7d3" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PRTS/prts.json" beforeDir="false" afterPath="$PROJECT_DIR$/PRTS/prts.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PRTS/prts.py" beforeDir="false" afterPath="$PROJECT_DIR$/PRTS/prts.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/plugins/PixivByETO/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/PixivByETO/main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/plugins/PixivByETO/token.json" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/PixivByETO/token.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test.py" beforeDir="false" afterPath="$PROJECT_DIR$/test.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/example.py" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/example.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -39,27 +37,27 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Python.__init__.executor": "Run",
-    "Python.info.executor": "Run",
-    "Python.main.executor": "Run",
-    "Python.new.executor": "Run",
-    "Python.prts.executor": "Run",
-    "Python.send.executor": "Run",
-    "Python.test.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "main",
-    "last_opened_file_path": "D:/Work Files/QQbot-byETO/理工学堂",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "inlay.hints",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Python.__init__.executor&quot;: &quot;Run&quot;,
+    &quot;Python.info.executor&quot;: &quot;Run&quot;,
+    &quot;Python.main.executor&quot;: &quot;Run&quot;,
+    &quot;Python.new.executor&quot;: &quot;Run&quot;,
+    &quot;Python.prts.executor&quot;: &quot;Run&quot;,
+    &quot;Python.send.executor&quot;: &quot;Run&quot;,
+    &quot;Python.test.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/Work Files/QQbot-byETO/理工学堂&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;inlay.hints&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="D:\Work Files\QQbot-byETO\理工学堂" />
@@ -99,7 +97,7 @@
       <workItem from="1734773703838" duration="41138000" />
       <workItem from="1735282169265" duration="34621000" />
       <workItem from="1736223751897" duration="1856000" />
-      <workItem from="1736488514646" duration="38645000" />
+      <workItem from="1736488514646" duration="46605000" />
     </task>
     <servers />
   </component>

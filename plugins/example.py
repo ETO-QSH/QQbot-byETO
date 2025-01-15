@@ -42,6 +42,7 @@ file_response = True
 video_response = True
 image_response = True
 gaoshu_response = True
+respect_response = True
 hitokoto_response = True
 educoder_response = True
 xingzheng_response = True
@@ -60,6 +61,7 @@ hitokoto = on_command("一言", rule=to_me())
 xingzheng = on_command("形政", rule=to_me())
 educoder = on_command("头歌", rule=to_me())
 gaoshu = on_command("高数", rule=to_me())
+respect = on_command("问候", rule=to_me())
 
 help = on_command("帮助", rule=to_me(), aliases={"-h", "help"})
 
@@ -72,6 +74,7 @@ hitokoto_cmd = on_command(("一言", "启用"), rule=to_me(), aliases={("一言"
 educoder_cmd = on_command(("头歌", "启用"), rule=to_me(), aliases={("头歌", "禁用")}, permission=SUPERUSER)
 xingzheng_cmd = on_command(("形政", "启用"), rule=to_me(), aliases={("形政", "禁用")}, permission=SUPERUSER)
 gaoshu_cmd = on_command(("高数", "启用"), rule=to_me(), aliases={("高数", "禁用")}, permission=SUPERUSER)
+respect_cmd = on_command(("问候", "启用"), rule=to_me(), aliases={("问候", "禁用")}, permission=SUPERUSER)
 
 config = nonebot.get_driver().config
 one_node = {"type": "node", "data": {"user_id": "3078491964", "nickname": "ETO", "content": []}}
@@ -80,7 +83,7 @@ one_node = {"type": "node", "data": {"user_id": "3078491964", "nickname": "ETO",
 @at_me.handle()
 async def at_bot(bot: Bot, event: Event):
     if '<le>[at:qq=3078491964' in str(event.get_log_string()) and str(event.get_message()) == '' and 'reply:id=' not in str(event.get_log_string()):
-        await bot.send_msg(message_type="group", group_id=event.group_id, message=[{"type": "record", "data": {"file": "https://torappu.prts.wiki/assets/audio/voice/char_180_amgoat/cn_001.wav?filename=%E4%BB%BB%E5%91%BD%E5%8A%A9%E7%90%86.wav"}}])
+        # await bot.send_msg(message_type="group", group_id=event.group_id, message=[{"type": "music", "data": {"type": "custom", "url": "https://github.com/ETO-QSH", "audio": r"D:\Images\文件\水瀬いのり 久保ユリカ - Endless Journey.flac", "title": "Endless Journey", "content": "少女终末旅行-EP", "image": r"D:\Desktop\Desktop\image\少女终末旅行.jpg"}}])
         await at_me.finish("꒰ঌ( ⌯' '⌯)໒꒱")
 
 @recall.handle()
@@ -159,6 +162,8 @@ async def help_eto(event: Event):
 5. [头歌]--发送py编程作业的答案
 6. [形政]--发送形政考试答案
 7. [高数]--发送高数作业答案
+8. [搜题]--理工学堂题库以图搜题
+9. [问候]--arknights问候
 
 你可以通过这些关键字访问功能
 例如：`ETO 一言`
@@ -241,6 +246,15 @@ async def control(cmd: Tuple[str, str] = Command()):
     elif cmd[1] == "禁用":
         xingzheng_response = False
     await xingzheng_cmd.finish(f"**形政插件已{cmd[1]}**")
+
+@respect_cmd.handle()
+async def control(cmd: Tuple[str, str] = Command()):
+    global respect_response
+    if cmd[1] == "启用":
+        respect_response = True
+    elif cmd[1] == "禁用":
+        respect_response = False
+    await respect_cmd.finish(f"**问候插件已{cmd[1]}**")
 
 @gaoshu_cmd.handle()
 async def control(cmd: Tuple[str, str] = Command()):
@@ -472,6 +486,30 @@ async def got_location(bot: Bot, event: Event, matcher: Matcher, location: str =
         await xingzheng.finish(f"没有`{location}`数据，原因不外乎我没写我没传你打错了，请先检查输入")
 
 
+@respect.handle()
+async def handle_function(bot: Bot, event: Event, matcher: Matcher, args: Message = CommandArg()):
+    if respect_response:
+        if args.extract_plain_text():
+            matcher.set_arg("location", args)
+        else:
+            await respect.finish(MessageSegment.record("https://torappu.prts.wiki/assets/audio/voice/char_180_amgoat/cn_042.wav"))
+    else:
+        await respect.finish(f"问候插件已禁用，请联系管理员：{config.superusers}")
+
+@respect.got("location", prompt="格式参考：[干员[行为[语言]]]")
+async def got_location(bot: Bot, event: Event, matcher: Matcher, location: str = ArgPlainText()):
+    link, data = None, read_json("PRTS/prts.json")
+    if location in data:
+        for index, item in data[location].items():
+            if item['title'] == '问候':
+                link = 'https:' + item['voice_link']['日语'].split('?')[0]
+                break
+        if link:
+            await respect.finish(MessageSegment.record(link))
+    else:
+        await respect.finish(f"没有`{location}`干员哦~")
+
+
 @gaoshu.handle()
 async def handle_function(bot: Bot, event: Event, matcher: Matcher, args: Message = CommandArg()):
     if gaoshu_response:
@@ -480,7 +518,7 @@ async def handle_function(bot: Bot, event: Event, matcher: Matcher, args: Messag
     else:
         await gaoshu.finish(f"高数插件已禁用，请联系管理员：{config.superusers}")
 
-@gaoshu.got("location", prompt="请给予更多信息：{理论|实践}课-第{N}章-第{n}题\n例：`实践课第三章第9题`")
+@gaoshu.got("location", prompt="")
 async def got_location(bot: Bot, event: Event, matcher: Matcher, location: str = ArgPlainText()):
     data, result = read_json(r'理工学堂\高等数学.json'), None
     for chapter_key, chapter_data in data.items():
