@@ -1,50 +1,22 @@
-from curl_cffi import requests
-from lxml import html
 
-response = requests.get('https://prts.wiki/w/艾雅法拉')
-if response.status_code == 200:
-    tree = html.fromstring(response.content)
-    voice_data_root = tree.xpath('//*[@id="voice-data-root"]')[0]
-    voice_data_item = voice_data_root.xpath('.//div[@class="voice-data-item"]')
-    voice_data_base = {key: value for pair in voice_data_root.get('data-voice-base').split(',') for key, value in [pair.split(':')]}
-    voice_mob = '//torappu.prts.wiki/assets/audio/{voice_base}/{filename}?filename={title}'
-    voice_data_items = {}
-
-    for item in voice_data_item:
-        voice_text, voice_details = {}, item.xpath('.//div[@class="voice-item-detail"]')
-        for detail in voice_details:
-            kind_name = detail.get('data-kind-name')
-            voice_text[kind_name] = detail.text_content().strip()
-
-        voice_data_items[item.get('data-voice-index')] = {
-            'title': item.get('data-title') + '.wav',
-            'filename': item.get('data-voice-filename').lower(),
-            'voice_text': voice_text,
-            'voice_base': voice_data_base
+a = {
+        "1": {
+            "title": "\u4efb\u547d\u52a9\u7406",
+            "filename": "CN_001.wav",
+            "voice_text": {
+                "\u4e2d\u6587": "\u62b1\u6b49\uff0c\u6211\u80fd\u505a\u7684\u4e8b\u60c5\u5f88\u6709\u9650\uff0c\u4e5f\u4e0d\u592a\u4f1a\u8bf4\u8bdd\uff0c\u4f46\u4f5c\u4e3a\u52a9\u7406\u611f\u5230\u5f88\u8363\u5e78\uff0c\u5982\u679c\u6211\u80fd\u5e2e\u5230\u535a\u58eb\u9601\u4e0b\u90a3\u5c31\u592a\u597d\u4e86\u3002",
+                "\u65e5\u6587": "\u7533\u3057\u8a33\u3042\u308a\u307e\u305b\u3093\u3001\u30c9\u30af\u30bf\u30fc\u6bbf\u3002\u79c1\u306f\u3053\u306e\u901a\u308a\u529b\u304c\u5f31\u3044\u3046\u3048\u3001\u53e3\u304c\u9054\u8005\u306a\u308f\u3051\u3067\u3082\u3042\u308a\u307e\u305b\u3093\u304c\u3001\u305d\u308c\u3067\u3082\u30a2\u30b7\u30b9\u30bf\u30f3\u30c8\u3092\u52d9\u3081\u3055\u305b\u3066\u3044\u305f\u3060\u3051\u308b\u4e8b\u306f\u81f3\u4e0a\u306e\u559c\u3073\u3067\u3059\u3002\u662f\u975e\u304a\u624b\u4f1d\u3044\u3055\u305b\u3066\u304f\u3060\u3055\u3044\u3002",
+                "\u82f1\u6587": "Forgive me, Doctor... There are limits to what I can do, including in conversation... but I'm honored to be your assistant. I look forward to helping you with your work.",
+                "\u97e9\u6587": "\uc8c4\uc1a1\ud569\ub2c8\ub2e4, \ubc15\uc0ac\ub2d8. \uc800\ub294 \ubcf4\uc2dc\ub2e4\uc2dc\ud53c \ud798\ub3c4 \uc57d\ud558\uace0, \uc5b8\ubcc0\ub3c4 \ub6f0\uc5b4\ub098\uc9c0 \uc54a\uc9c0\ub9cc, \uadf8\ub7fc\uc5d0\ub3c4 \uc800\ub97c \uc5b4\uc2dc\uc2a4\ud134\ud2b8\ub85c \uc0bc\uc544 \uc8fc\uc154\uc11c \uc601\uad11\uc2a4\ub7fd\uae30 \uadf8\uc9c0\uc5c6\uc2b5\ub2c8\ub2e4. \uae30\uc05c \ub9c8\uc74c\uc73c\ub85c \ub3c4\uc640\ub4dc\ub9ac\uc8e0.",
+                "\u7e41\u4f53\u4e2d\u6587": "\u62b1\u6b49\uff0c\u6211\u80fd\u505a\u7684\u4e8b\u60c5\u5f88\u6709\u9650\uff0c\u4e5f\u4e0d\u592a\u6703\u8aaa\u8a71\uff0c\u4f46\u4f5c\u70ba\u52a9\u7406\u611f\u5230\u5f88\u69ae\u5e78\uff0c\u5982\u679c\u6211\u80fd\u5e6b\u5230\u535a\u58eb\u95a3\u4e0b\u90a3\u5c31\u592a\u597d\u4e86\u3002"
+            },
+            "voice_link": {
+                "\u65e5\u8bed": "//torappu.prts.wiki/assets/audio/voice/char_009_12fce/cn_001.wav?filename=\u4efb\u547d\u52a9\u7406",
+                "\u4e2d\u6587-\u666e\u901a\u8bdd": "//torappu.prts.wiki/assets/audio/voice_cn/char_009_12fce/cn_001.wav?filename=\u4efb\u547d\u52a9\u7406",
+                "\u97e9\u8bed": "//torappu.prts.wiki/assets/audio/voice_kr/char_009_12fce/cn_001.wav?filename=\u4efb\u547d\u52a9\u7406",
+                "\u82f1\u8bed": "//torappu.prts.wiki/assets/audio/voice_en/char_009_12fce/cn_001.wav?filename=\u4efb\u547d\u52a9\u7406"
+            }
         }
+    }
 
-    print(voice_data_items)
-
-    voice_table_html = html.tostring(voice_data_root, encoding='unicode', pretty_print=True)
-    # print(voice_table_html)
-
-else:
-    print(f'请求失败，状态码：{response.status_code}')
-
-
-response = requests.get('https://prts.wiki/w/干员一览')
-if response.status_code == 200:
-    tree = html.fromstring(response.content)
-    filter_data = tree.xpath('//*[@id="filter-data"]')
-    filter_datas = {}
-
-    for items in filter_data:
-        for item in items:
-            filter_datas[item.get('data-zh')] = {key[5:]: value for key, value in item.items() if key.startswith('data-')}
-
-    print(filter_datas)
-
-    # print(voice_table_html)
-
-else:
-    print(f'请求失败，状态码：{response.status_code}')
+print(a)

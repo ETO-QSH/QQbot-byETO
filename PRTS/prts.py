@@ -10,7 +10,7 @@ def get_voice_info(name):
         voice_data_root = tree.xpath('//*[@id="voice-data-root"]')[0]
         voice_data_item = voice_data_root.xpath('.//div[@class="voice-data-item"]')
         voice_data_base = {key: value for pair in voice_data_root.get('data-voice-base').split(',') for key, value in [pair.split(':')]}
-        voice_mob = '//torappu.prts.wiki/assets/audio/{voice_base}/{filename}?filename={title}'
+        voice_mob = '//torappu.prts.wiki/assets/audio/{voice_base}/{filename}?filename={title}.wav'
         voice_data_items = {}
         for item in voice_data_item:
             voice_text, voice_details = {}, item.xpath('.//div[@class="voice-item-detail"]')
@@ -38,7 +38,7 @@ if response.status_code == 200:
         for item in datas.keys()
     }
     with open('prts.json', 'w', encoding='utf-8') as file:
-        json.dump(InformationDictionary, file, indent=4)
+        json.dump(InformationDictionary, file, indent=4, ensure_ascii=False)
 else:
     print(f'请求失败，状态码：{response.status_code}')
 
