@@ -83,7 +83,9 @@ one_node = {"type": "node", "data": {"user_id": "3078491964", "nickname": "ETO",
 @at_me.handle()
 async def at_bot(bot: Bot, event: Event):
     if '<le>[at:qq=3078491964' in str(event.get_log_string()) and str(event.get_message()) == '' and 'reply:id=' not in str(event.get_log_string()):
-        # await bot.send_msg(message_type="group", group_id=event.group_id, message=[{"type": "music", "data": {"type": "custom", "url": "https://github.com/ETO-QSH", "audio": r"D:\Images\文件\水瀬いのり 久保ユリカ - Endless Journey.flac", "title": "Endless Journey", "content": "少女终末旅行-EP", "image": r"D:\Desktop\Desktop\image\少女终末旅行.jpg"}}])
+        # 音乐卡片 await at_me.finish(MessageSegment.music_custom(url="https://www.midishow.com/u/Dr.ETO", audio="https://torappu.prts.wiki/assets/audio/voice/char_180_amgoat/cn_042.wav", title="Endless Journey", content="少女終末旅行-EP",
+        # 音乐卡片                                                img_url="https://a1.qpic.cn/psc?/V12Kat591VDTdC/TmEUgtj9EK6.7V8ajmQrEJ0d2fTNbbZT0OkScIYmdH7XloC6xCxrhrUWckUAxAT1UrSveoRSIKCAozqgGJw5Lv3yiFAsIF.eEFS4qBxfyhU!/b&"
+        # 音乐卡片                                                        "ek=1&kp=1&pt=0&bo=AAQABAAEAAQDd1I!&tl=1&vuin=2373204754&tm=1736996400&dis_t=1736999214&dis_k=35ed510366a2e5871531674719dd0bb2&sce=60-2-2&rf=viewer_4"))
         await at_me.finish("꒰ঌ( ⌯' '⌯)໒꒱")
 
 @recall.handle()
