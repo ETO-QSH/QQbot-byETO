@@ -114,7 +114,7 @@ async def send_emoji(bot: Bot, event: Event):
             file_name = os.path.basename(file).split('.')[0]
             path_name = os.path.basename(os.path.dirname(os.path.dirname(file))).split()[0]
             info = Information[path_name][file_name][0]
-            await poke_notice.finish(MessageSegment.image(file) + f"发送 `ETO 高数 {info}` 获取答案")
+            await poke_notice.finish(MessageSegment.image(os.path.abspath(file)) + f"发送 `ETO 高数 {info}` 获取答案")
         else:
             custom_faces = await bot.call_api("fetch_custom_face")
             await bot.send_group_msg(group_id=event.group_id, message=MessageSegment.image(file=custom_faces[0]))

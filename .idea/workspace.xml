@@ -10,6 +10,9 @@
       <change beforePath="$PROJECT_DIR$/plugins/PixivByETO/token.json" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/PixivByETO/token.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/plugins/example.py" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/example.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/test.py" beforeDir="false" afterPath="$PROJECT_DIR$/test.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/理工学堂/kzt.py" beforeDir="false" afterPath="$PROJECT_DIR$/理工学堂/kzt.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/理工学堂/new.py" beforeDir="false" afterPath="$PROJECT_DIR$/理工学堂/lgxt.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/理工学堂/高等数学.json" beforeDir="false" afterPath="$PROJECT_DIR$/理工学堂/高等数学.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -38,27 +41,29 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Python.__init__.executor&quot;: &quot;Run&quot;,
-    &quot;Python.info.executor&quot;: &quot;Run&quot;,
-    &quot;Python.main.executor&quot;: &quot;Run&quot;,
-    &quot;Python.new.executor&quot;: &quot;Run&quot;,
-    &quot;Python.prts.executor&quot;: &quot;Run&quot;,
-    &quot;Python.send.executor&quot;: &quot;Run&quot;,
-    &quot;Python.test.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/Work Files/QQbot-byETO/理工学堂&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;inlay.hints&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Python.__init__.executor": "Run",
+    "Python.info.executor": "Run",
+    "Python.kzt.executor": "Run",
+    "Python.lgxt.executor": "Run",
+    "Python.main.executor": "Run",
+    "Python.new.executor": "Run",
+    "Python.prts.executor": "Run",
+    "Python.send.executor": "Run",
+    "Python.test.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "main",
+    "last_opened_file_path": "D:/Work Files/QQbot-byETO",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "inlay.hints",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="D:\Work Files\QQbot-byETO\理工学堂" />
@@ -98,7 +103,14 @@
       <workItem from="1734773703838" duration="41138000" />
       <workItem from="1735282169265" duration="34621000" />
       <workItem from="1736223751897" duration="1856000" />
-      <workItem from="1736488514646" duration="59093000" />
+      <workItem from="1736488514646" duration="82438000" />
+      <workItem from="1738084130872" duration="1903000" />
+      <workItem from="1738556219361" duration="668000" />
+      <workItem from="1739162549473" duration="3092000" />
+      <workItem from="1739343978806" duration="3319000" />
+      <workItem from="1740926974796" duration="95000" />
+      <workItem from="1740927309677" duration="1340000" />
+      <workItem from="1741098725262" duration="15452000" />
     </task>
     <servers />
   </component>
@@ -119,10 +131,12 @@
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/QQbot_byETO$info.coverage" NAME="info Coverage Results" MODIFIED="1735632593699" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/ETO-Python123/Python123ETO" />
     <SUITE FILE_PATH="coverage/QQbot_byETO$send.coverage" NAME="send Coverage Results" MODIFIED="1735313864747" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/ETO-Python123/Python123ETO" />
-    <SUITE FILE_PATH="coverage/QQbot_byETO$new.coverage" NAME="new Coverage Results" MODIFIED="1734077122937" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/educoder" />
+    <SUITE FILE_PATH="coverage/QQbot_byETO$new.coverage" NAME="new Coverage Results" MODIFIED="1740928588869" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/理工学堂" />
     <SUITE FILE_PATH="coverage/QQbot_byETO$main.coverage" NAME="main Coverage Results" MODIFIED="1732288392389" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/plugins/PixivByETO" />
     <SUITE FILE_PATH="coverage/QQbot_byETO$prts.coverage" NAME="prts Coverage Results" MODIFIED="1736938915190" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/PRTS" />
+    <SUITE FILE_PATH="coverage/QQbot_byETO$lgxt.coverage" NAME="lgxt Coverage Results" MODIFIED="1741100990006" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/理工学堂" />
     <SUITE FILE_PATH="coverage/QQbot_byETO$__init__.coverage" NAME="__init__ Coverage Results" MODIFIED="1735309444028" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/ETO-Python123/Python123ETO" />
     <SUITE FILE_PATH="coverage/QQbot_byETO$test.coverage" NAME="test Coverage Results" MODIFIED="1736962140691" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/QQbot_byETO$kzt.coverage" NAME="kzt Coverage Results" MODIFIED="1741164833669" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/理工学堂" />
   </component>
 </project>

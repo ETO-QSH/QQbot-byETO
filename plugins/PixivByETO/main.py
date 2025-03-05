@@ -1,4 +1,4 @@
-import os, re, json, base64, zipfile
+import os, re, json, base64, bcrypt, zipfile
 from Crypto.Cipher import AES
 from gppt import GetPixivToken
 from pixivpy3 import AppPixivAPI
@@ -62,8 +62,10 @@ def update_json(Json, Dic):
 def make_key_AES(key, data, mode):
     cipher = AES.new(key.encode('utf-8'), AES.MODE_CBC, key.encode('utf-8'))
     if mode == 'Encrypt':
-        pad = lambda s:s+(len(key)-len(s)%len(key))*chr(len(key)-len(s)%len(key))
-        return base64.b64encode(cipher.encrypt(pad(data).encode('utf-8'))).decode('utf-8')
+        pad = lambda s: s+(len(key)-len(s)%len(key))*chr(len(key)-len(s)%len(key))
+        password = base64.b64encode(cipher.encrypt(pad(data).encode('utf-8'))).decode('utf-8')
+        hashedPassword = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+        return password
     elif mode == 'Decrypt':
         unpad = lambda s: s[:-ord(s[len(s)-1:])]
         return unpad(cipher.decrypt(base64.decodebytes(data.encode('utf-8')))).decode('utf-8')
