@@ -2,6 +2,9 @@
 import copy
 import json
 import os
+import zipfile
+from datetime import datetime
+
 import cv2
 import random
 import re
@@ -15,7 +18,7 @@ import numpy as np
 from curl_cffi import requests
 import requests
 
-from plugins.PixivByETO.main import *
+# from plugins.PixivByETO.main import *
 
 import nonebot
 from nonebot import on_command, on_message, on_notice, on_fullmatch
@@ -28,6 +31,7 @@ from nonebot.params import CommandArg, Command
 from nonebot.permission import SUPERUSER
 from nonebot.rule import to_me
 from nonebot.exception import NetworkError
+from deepseek_api.main import *
 
 rps_dict = {}
 dice_dict = {}
@@ -64,6 +68,7 @@ gaoshu = on_command("高数", rule=to_me())
 respect = on_command("问候", rule=to_me())
 
 help = on_command("帮助", rule=to_me(), aliases={"-h", "help"})
+none_message = on_message(rule=to_me(), priority=True)
 
 rps_cmd = on_command(("猜拳", "启用"), rule=to_me(), aliases={("猜拳", "禁用")}, permission=SUPERUSER)
 dice_cmd = on_command(("骰子", "启用"), rule=to_me(), aliases={("骰子", "禁用")}, permission=SUPERUSER)
@@ -79,17 +84,30 @@ respect_cmd = on_command(("问候", "启用"), rule=to_me(), aliases={("问候",
 config = nonebot.get_driver().config
 one_node = {"type": "node", "data": {"user_id": "3078491964", "nickname": "ETO", "content": []}}
 
+chat_system = ChatSystem(api_key)
+
+@none_message.handle()
+async def ai_fallback(bot: Bot, event: Event, matcher: Matcher):
+    response = await chat_system.handle_request(
+        service_key="BOT",
+        user_info="2373204754",
+        user_state="已认证",
+        user_input=str(event.get_message())
+    )
+    matcher.stop_propagation()
+    await none_message.finish(MessageSegment.at(event.get_user_id()) + "\n" + response["response"])
 
 @at_me.handle()
-async def at_bot(bot: Bot, event: Event):
+async def at_bot(bot: Bot, event: Event, matcher: Matcher):
     if '<le>[at:qq=3078491964' in str(event.get_log_string()) and str(event.get_message()) == '' and 'reply:id=' not in str(event.get_log_string()):
         # 音乐卡片 await at_me.finish(MessageSegment.music_custom(url="https://www.midishow.com/u/Dr.ETO", audio="https://torappu.prts.wiki/assets/audio/voice/char_180_amgoat/cn_042.wav", title="Endless Journey", content="少女終末旅行-EP",
         # 音乐卡片                                                img_url="https://a1.qpic.cn/psc?/V12Kat591VDTdC/TmEUgtj9EK6.7V8ajmQrEJ0d2fTNbbZT0OkScIYmdH7XloC6xCxrhrUWckUAxAT1UrSveoRSIKCAozqgGJw5Lv3yiFAsIF.eEFS4qBxfyhU!/b&"
         # 音乐卡片                                                        "ek=1&kp=1&pt=0&bo=AAQABAAEAAQDd1I!&tl=1&vuin=2373204754&tm=1736996400&dis_t=1736999214&dis_k=35ed510366a2e5871531674719dd0bb2&sce=60-2-2&rf=viewer_4"))
-        await at_me.finish("꒰ঌ( ⌯' '⌯)໒꒱")
+        matcher.stop_propagation()
+        await at_me.finish(MessageSegment.record(r"D:\Desktop\Desktop\audio\audio_6.wav"))  # MessageSegment.record(r"D:\Desktop\Desktop\audio\audio_6.wav")
 
 @recall.handle()
-async def sbRecall(bot: Bot, event: Event):
+async def sbRecall(bot: Bot, event: Event, matcher: Matcher):
     try:
         msg_id = str(ast.literal_eval(event.get_event_description())['message_id'])
         if msg_id in rps_dict:
@@ -100,12 +118,14 @@ async def sbRecall(bot: Bot, event: Event):
             if dice_dict[msg_id] != None:
                 await bot.delete_msg(message_id=dice_dict[msg_id])
             del dice_dict[msg_id]
+        matcher.stop_propagation()
         await recall.finish()
     except Exception as e:
+        matcher.stop_propagation()
         await recall.finish()
 
 @poke_notice.handle()
-async def send_emoji(bot: Bot, event: Event):
+async def send_emoji(bot: Bot, event: Event, matcher: Matcher):
     if event.notice_type == 'notify' and event.sub_type == 'poke':
         if str(event.group_id) in ["797784653", "981535936"] and gaoshu_response:
             Information = read_json(r'理工学堂\高等数学.json')
@@ -114,13 +134,16 @@ async def send_emoji(bot: Bot, event: Event):
             file_name = os.path.basename(file).split('.')[0]
             path_name = os.path.basename(os.path.dirname(os.path.dirname(file))).split()[0]
             info = Information[path_name][file_name][0]
+            matcher.stop_propagation()
             await poke_notice.finish(MessageSegment.image(os.path.abspath(file)) + f"发送 `ETO 高数 {info}` 获取答案")
         else:
             custom_faces = await bot.call_api("fetch_custom_face")
             await bot.send_group_msg(group_id=event.group_id, message=MessageSegment.image(file=custom_faces[0]))
+            matcher.stop_propagation()
+            await poke_notice.finish()
 
 @reaction.handle()
-async def reply(bot: Bot, event: Event):
+async def reply(bot: Bot, event: Event, matcher: Matcher):
     if '<le>[reply:id=' in event.get_log_string():
         ID = re.search(r'reply:id=(\d+)', event.get_log_string()).group(1)
         # 这里这个api存在问题，下次再改
@@ -130,25 +153,34 @@ async def reply(bot: Bot, event: Event):
             if len(get_msg['message']) == 1 and get_msg['message'][0]['type'] == 'image':
                 url = get_msg['message'][0]['data']['url']
                 file_path = f'data\\reaction_temp\\{event.group_id}_{event.get_user_id()}_{datetime.now().strftime("%H%M%S")}.jpg'
-                try: download_image(url, file_path)
-                except Exception as e: await reaction.finish('图片下载失败。。。')
+                try:
+                    download_image(url, file_path)
+                except Exception as e:
+                    matcher.stop_propagation()
+                    await reaction.finish('图片下载失败。。。')
                 c = search_TM(file_path)
                 os.remove(file_path)
+                matcher.stop_propagation()
                 await reaction.finish(MessageSegment.at(event.get_user_id()) + c)
+        matcher.stop_propagation()
         await reaction.finish('看不懂喵 ฅ( ̳• · • ̳ฅ)')
+    matcher.stop_propagation()
     await reaction.finish()
 
 @dance.handle()
-async def send_emoji(bot: Bot, event: Event):
+async def send_emoji(bot: Bot, event: Event, matcher: Matcher):
     if '跳舞' in str(event.get_message()):
         custom_faces = await bot.call_api("fetch_custom_face")
         await bot.send_group_msg(group_id=event.group_id, message=MessageSegment.image(file=custom_faces[1]))
+        matcher.stop_propagation()
+        await dance.finish()
 
 @stop.handle()
-async def control():
+async def control(bot: Bot, event: Event, matcher: Matcher):
     global rps_ed, dice_ed
     rps_ed = False
     dice_ed = False
+    matcher.stop_propagation()
     await stop.finish(f"**猜拳骰子已关闭**")
 
 @help.handle()
@@ -174,97 +206,108 @@ async def help_eto(event: Event):
 
 项目的管理者为 {config.superusers}
 如有需求和或者bug都可以反馈'''
+    matcher.stop_propagation()
     await help.finish(MessageSegment.at(event.get_user_id())+help_msg)
 
 
 @rps_cmd.handle()
-async def control(cmd: Tuple[str, str] = Command()):
+async def control(matcher: Matcher, cmd: Tuple[str, str] = Command()):
     global rps_response
     if cmd[1] == "启用":
         rps_response = True
     elif cmd[1] == "禁用":
         rps_response = False
+    matcher.stop_propagation()
     await rps_cmd.finish(f"**猜拳插件已{cmd[1]}**")
 
 @dice_cmd.handle()
-async def control(cmd: Tuple[str, str] = Command()):
+async def control(matcher: Matcher, cmd: Tuple[str, str] = Command()):
     global dice_response
     if cmd[1] == "启用":
         dice_response = True
     elif cmd[1] == "禁用":
         dice_response = False
+    matcher.stop_propagation()
     await dice_cmd.finish(f"**骰子插件已{cmd[1]}**")
 
 @file_cmd.handle()
-async def control(cmd: Tuple[str, str] = Command()):
+async def control(matcher: Matcher, cmd: Tuple[str, str] = Command()):
     global file_response
     if cmd[1] == "启用":
         file_response = True
     elif cmd[1] == "禁用":
         file_response = False
+    matcher.stop_propagation()
     await file_cmd.finish(f"**文件插件已{cmd[1]}**")
 
 @image_cmd.handle()
-async def control(cmd: Tuple[str, str] = Command()):
+async def control(matcher: Matcher, cmd: Tuple[str, str] = Command()):
     global image_response
     if cmd[1] == "启用":
         image_response = True
     elif cmd[1] == "禁用":
         image_response = False
+    matcher.stop_propagation()
     await image_cmd.finish(f"**图片插件已{cmd[1]}**")
 
 @video_cmd.handle()
-async def control(cmd: Tuple[str, str] = Command()):
+async def control(matcher: Matcher, cmd: Tuple[str, str] = Command()):
     global video_response
     if cmd[1] == "启用":
         video_response = True
     elif cmd[1] == "禁用":
         video_response = False
+    matcher.stop_propagation()
     await video_cmd.finish(f"**视频插件已{cmd[1]}**")
 
 @hitokoto_cmd.handle()
-async def control(cmd: Tuple[str, str] = Command()):
+async def control(matcher: Matcher, cmd: Tuple[str, str] = Command()):
     global hitokoto_response
     if cmd[1] == "启用":
         hitokoto_response = True
     elif cmd[1] == "禁用":
         hitokoto_response = False
+    matcher.stop_propagation()
     await hitokoto_cmd.finish(f"**一言插件已{cmd[1]}**")
 
 @educoder_cmd.handle()
-async def control(cmd: Tuple[str, str] = Command()):
+async def control(matcher: Matcher, cmd: Tuple[str, str] = Command()):
     global educoder_response
     if cmd[1] == "启用":
         educoder_response = True
     elif cmd[1] == "禁用":
         educoder_response = False
+    matcher.stop_propagation()
     await educoder_cmd.finish(f"**头歌插件已{cmd[1]}**")
 
 @xingzheng_cmd.handle()
-async def control(cmd: Tuple[str, str] = Command()):
+async def control(matcher: Matcher, cmd: Tuple[str, str] = Command()):
     global xingzheng_response
     if cmd[1] == "启用":
         xingzheng_response = True
     elif cmd[1] == "禁用":
         xingzheng_response = False
+    matcher.stop_propagation()
     await xingzheng_cmd.finish(f"**形政插件已{cmd[1]}**")
 
 @respect_cmd.handle()
-async def control(cmd: Tuple[str, str] = Command()):
+async def control(matcher: Matcher, cmd: Tuple[str, str] = Command()):
     global respect_response
     if cmd[1] == "启用":
         respect_response = True
     elif cmd[1] == "禁用":
         respect_response = False
+    matcher.stop_propagation()
     await respect_cmd.finish(f"**问候插件已{cmd[1]}**")
 
 @gaoshu_cmd.handle()
-async def control(cmd: Tuple[str, str] = Command()):
+async def control(matcher: Matcher, cmd: Tuple[str, str] = Command()):
     global gaoshu_response
     if cmd[1] == "启用":
         gaoshu_response = True
     elif cmd[1] == "禁用":
         gaoshu_response = False
+    matcher.stop_propagation()
     await gaoshu_cmd.finish(f"**高数插件已{cmd[1]}**")
 
 
@@ -434,6 +477,7 @@ async def handle_function(bot: Bot, event: Event, matcher: Matcher, args: Messag
         if args.extract_plain_text():
             matcher.set_arg("location", args)
     else:
+        matcher.stop_propagation()
         await educoder.finish(f"头歌插件已禁用，请联系管理员：{config.superusers}")
 
 @educoder.got("location", prompt="请给予更多信息：{理论|实践}课-第{N}章-第{n}题\n例：`实践课第三章第9题`")
@@ -449,6 +493,7 @@ async def got_location(bot: Bot, event: Event, matcher: Matcher, location: str =
     except FinishedException:
         pass
     except:
+        matcher.stop_propagation()
         await educoder.finish(f"没有`{location}`数据，原因不外乎我没写我没传你打错了，请先检查输入")
 
 
@@ -458,6 +503,7 @@ async def handle_function(bot: Bot, event: Event, matcher: Matcher, args: Messag
         if args.extract_plain_text():
             matcher.set_arg("location", args)
     else:
+        matcher.stop_propagation()
         await xingzheng.finish(f"形政插件已禁用，请联系管理员：{config.superusers}")
 
 @xingzheng.got("location", prompt="请给予题干片段")
@@ -485,6 +531,7 @@ async def got_location(bot: Bot, event: Event, matcher: Matcher, location: str =
     except FinishedException:
         pass
     except:
+        matcher.stop_propagation()
         await xingzheng.finish(f"没有`{location}`数据，原因不外乎我没写我没传你打错了，请先检查输入")
 
 
@@ -494,8 +541,10 @@ async def handle_function(bot: Bot, event: Event, matcher: Matcher, args: Messag
         if args.extract_plain_text():
             matcher.set_arg("location", args)
         else:
+            matcher.stop_propagation()
             await respect.finish(MessageSegment.record("https://torappu.prts.wiki/assets/audio/voice/char_180_amgoat/cn_042.wav"))
     else:
+        matcher.stop_propagation()
         await respect.finish(f"问候插件已禁用，请联系管理员：{config.superusers}")
 
 @respect.got("location", prompt="格式参考：[干员[行为&语言]]")
@@ -526,10 +575,13 @@ async def got_location(bot: Bot, event: Event, matcher: Matcher, location: str =
             else:
                 break
         if link:
+            matcher.stop_propagation()
             await respect.finish(MessageSegment.record(link))
         else:
+            matcher.stop_propagation()
             await respect.finish(f"参数`{loc[1:]}`错误捏~")
     else:
+        matcher.stop_propagation()
         await respect.finish(f"没有`{loc[0]}`干员哦~")
 
 
@@ -539,6 +591,7 @@ async def handle_function(bot: Bot, event: Event, matcher: Matcher, args: Messag
         if args.extract_plain_text():
             matcher.set_arg("location", args)
     else:
+        matcher.stop_propagation()
         await gaoshu.finish(f"高数插件已禁用，请联系管理员：{config.superusers}")
 
 @gaoshu.got("location", prompt="")
@@ -552,8 +605,10 @@ async def got_location(bot: Bot, event: Event, matcher: Matcher, location: str =
         if result: break
     if gaoshu_response:
         if result:
+            matcher.stop_propagation()
             await gaoshu.finish(MessageSegment.at(event.get_user_id()) + f"\n高数 {location}：{result}")
         else:
+            matcher.stop_propagation()
             await gaoshu.finish(f"好好复制喵 ~")
 
 @hitokoto.handle()
@@ -562,6 +617,7 @@ async def handle_function(bot: Bot, event: Event, matcher: Matcher, args: Messag
         if args.extract_plain_text():
             matcher.set_arg("location", args)
     else:
+        matcher.stop_propagation()
         await hitokoto.finish(f"一言插件已禁用，请联系管理员：{config.superusers}")
 
 @hitokoto.got("location", prompt='请选择句子类型：' + str(list(read_json("other\\hitokoto.json")["sentences"].keys())))
@@ -569,36 +625,43 @@ async def got_location(bot: Bot, event: Event, matcher: Matcher, location: str =
     date = read_json("other\\hitokoto.json")
     try:
         if "+" in location:
+            matcher.stop_propagation()
             await hitokoto.finish(MessageSegment.at(event.get_user_id()) + '\n\n' + str(random.choice(date["sentences"][location[:-1]])))
         else:
             c = random.choice(date["sentences"][location])
+            matcher.stop_propagation()
             await hitokoto.finish(MessageSegment.at(event.get_user_id()) + '\n\n' + f'{c["hitokoto"]}\n\nFrom：{c["from"]}')
     except FinishedException:
         pass
     except:
+        matcher.stop_propagation()
         await hitokoto.finish("不是喵，这就单选题的说")
 
 
 @rps.handle()
-async def handle_function():
+async def handle_function(matcher: Matcher):
     global rps_ed
     if rps_response:
         rps_ed = True
+        matcher.stop_propagation()
         await rps.finish("拥有败者食尘，喵喵是不会输的！")
     else:
+        matcher.stop_propagation()
         await rps.finish(f"猜拳插件已禁用，请联系管理员：{config.superusers}")
 
 @dice.handle()
-async def handle_function():
+async def handle_function(matcher: Matcher):
     global dice_ed
     if dice_response:
         dice_ed = True
+        matcher.stop_propagation()
         await dice.finish("拥有败者食尘，喵喵是不会输的！")
     else:
+        matcher.stop_propagation()
         await dice.finish(f"骰子插件已禁用，请联系管理员：{config.superusers}")
 
 @ing.handle()
-async def handle_ing(bot: Bot, event: Event):
+async def handle_ing(bot: Bot, event: Event, matcher: Matcher):
     if rps_ed:
         text = event.get_log_string()
         if "<le>[rps:result=" in text:
@@ -639,6 +702,7 @@ async def handle_ing(bot: Bot, event: Event):
                         break
                     else:
                         await bot.delete_msg(message_id=msg_id['message_id'])
+                matcher.stop_propagation()
                 await hitokoto.finish()
 
     # 这里懒得改了，写法和上面一样
@@ -650,6 +714,7 @@ async def handle_ing(bot: Bot, event: Event):
             if match:
                 dice_segment = MessageSegment.dice()
                 dice_segment.data = {'result': '6'}
+                matcher.stop_propagation()
                 await hitokoto.finish(dice_segment)
 
 
@@ -659,6 +724,7 @@ async def handle_function(bot: Bot, event: Event, matcher: Matcher, args: Messag
         if args.extract_plain_text():
             matcher.set_arg("location", args)
     else:
+        matcher.stop_propagation()
         await video.finish(f"视频插件已禁用，请联系管理员：{config.superusers}")
 
 @video.got("location", prompt="\n\n".join(["请提供视频序号："] + [f'Serial:{i} | name:{item["name"]} | tag:{item["tag"]}' for i, item in read_json("other\\video.json")["midishow"].items()]))
@@ -667,14 +733,17 @@ async def got_location(bot: Bot, event: Event, matcher: Matcher, location: str =
         if "+" in location:
             locate = read_json("other\\video.json")["midishow"][location[:-1]]
             await video.send(MessageSegment.at(event.get_user_id()) + '\n' + f"更多信息：{str(locate)}")
+            matcher.stop_propagation()
             await video.finish(MessageSegment.video(locate["url"]))
         else:
             locate = read_json("other\\video.json")["midishow"][location]
             await video.send(MessageSegment.at(event.get_user_id()))
+            matcher.stop_propagation()
             await video.finish(MessageSegment.video(locate["url"]))
     except FinishedException:
         pass
     except:
+        matcher.stop_propagation()
         await video.finish("不是喵，怎么有人序号填不好")
 
 
@@ -684,6 +753,7 @@ async def handle_function(bot: Bot, event: Event, matcher: Matcher, args: Messag
         if args.extract_plain_text():
             matcher.set_arg("location", args)
     else:
+        matcher.stop_propagation()
         await file.finish(f"文件插件已禁用，请联系管理员：{config.superusers}")
 
 @file.got("location", prompt='文件列表（很大!=很慢）：\n\n'+"\n\n".join([f"{i+1}. {file}" for i, file in enumerate(work_paths("D:\Images\文件").keys())]))
@@ -699,6 +769,7 @@ async def got_location(bot: Bot, event: Event, matcher: Matcher, location: str =
     except NetworkError:
         pass
     except:
+        matcher.stop_propagation()
         await file.finish(f"不是喵，怎么有人序号填不好")
 
 
@@ -708,12 +779,14 @@ async def handle_function(bot: Bot, event: Event, matcher: Matcher, args: Messag
         if args.extract_plain_text():
             matcher.set_arg("location", args)
     else:
+        matcher.stop_propagation()
         await image.finish(f"图片插件已禁用，请联系管理员：{config.superusers}")
 
 @image.got("location", prompt="目前开放图片源：[ 本地 | pixiv ]")
 async def got_location(bot: Bot, event: Event, matcher: Matcher, location: str = ArgPlainText()):
     try:
         if location == '本地':
+            matcher.stop_propagation()
             await image.finish(MessageSegment.at(event.get_user_id()) + MessageSegment.image(random_file([r"D:\Images\图片", r"D:\Desktop\Desktop\new-pic"])))
         elif location == "pixiv":
             if event.get_user_id() in config.superusers:
@@ -721,13 +794,16 @@ async def got_location(bot: Bot, event: Event, matcher: Matcher, location: str =
             else:
                 # await image.send("悠着点用，接口那边也是我写的，纲领是能跑就行，暂时不支持异步，而且因为需要代理，以及使用我的账号，可能出现一些问题。如果需要良好的下载环境，可以在我的github中找到独立的pixiv接口")
                 # await image.finish("测试阶段权限还未开启")
+                matcher.stop_propagation()
                 await image.finish("刚禁的别想了的说")
                 matcher.got("mode")
         else:
             raise ("Exception: 未知源")
     except FinishedException:
+        matcher.stop_propagation()
         await image.finish()
     except:
+        matcher.stop_propagation()
         await image.finish("不是喵，这那么难选吗的说")
 
 @image.got("mode", prompt="请输入功能序号：\n\nS1. 插画信息\n\nS2. 用户作品\n\nS3. 榜单查询\n\nS4. 用户查找\n\nS5. 标签查询\n\nD1. 下载单个插画\n\nD2. 下载用户所有作品\n\nD3. 下载匹配用户名最新作品\n\nD4. 下载指定榜单所有作品\n\nD5. 下载标签下指定页作品")
@@ -747,6 +823,7 @@ async def got_artist_id(bot: Bot, event: Event, matcher: Matcher, mode: str = Ar
         await image.send(MessageSegment.text(f"格式参考：\n\n#(必要参数value)# #(非必要参数key):(非必要参数value)# #(非必要参数key):(非必要参数value)#\n\n格式示例：\n\nD4 | ## \nD1 | #96348927# \nD3 | #_Quan# #zip:True# \nS3 | #mode:day# #date:2024-10-01# #filter:True#"))
         matcher.got("args")
     else:
+        matcher.stop_propagation()
         await image.finish("不是喵，怎么有人序号填不好")
 
 @image.got("args")
@@ -856,5 +933,5 @@ async def got_work_id(bot: Bot, event: Event, matcher: Matcher, args: str = ArgP
         traceback.print_exc()
     except:
         traceback.print_exc()
+        matcher.stop_propagation()
         await image.finish(MessageSegment.at(event.get_user_id()) + MessageSegment.text(" 看得出来你格式没填对啊"))
-
