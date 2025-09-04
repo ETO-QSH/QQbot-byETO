@@ -8,6 +8,7 @@ from typing import Dict, Tuple
 from openai import AsyncOpenAI
 from deepseek_api.tool import AcademicQueryTools
 
+
 def is_in_time_range():
     now = datetime.now()
     h, m = now.hour, now.minute
@@ -55,17 +56,21 @@ class ServiceSession:
             "WUT": "为已认证用户提供简单的个人信息查询服务，以及基础知识的问答，" +
                    "可查询的信息包括: 课程信息，考试安排，考试成绩，这三个方面。" +
                    "回答应该简短并且礼貌，执行查询服务时，从用户的信息中理解用户的需求",
-            "BOT": "陪用户闲聊，依照用户需求进行互动，回答应该简短并且礼貌",
+            "BOT": "依照用户需求进行互动，解决问题，以一只猫娘的口吻",
             "ETO": "尽可能帮助用户解决问题，做到详细清晰"
         }
 
-        return [{"role": "system",  "content": "你给出的任何回答必须基于以下信息，特别是时间相关" +
-                 f"当前时间: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}" +
-                 f"你的身份: 由 'Dr.ETO' 搭建的 'deepseek v3' 语言模型接口" +
-                 f"交流语言: 默认中文，如果用户有特殊要求，可以依照需求" +
-                 f"你的工作: {Service[self.service_key]}" +
-                 f"用户状态: {self.user_state}" +
-                 f"用户信息: {self.user_info}"}]
+        return [
+            {
+                "role": "system", "content": "你给出的任何回答必须基于以下信息，特别是时间相关，务必保证正确。" +
+                f"当前时间: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}。" +
+                f"你的身份: 由 'Dr.ETO' 搭建的 'deepseek v3' 语言模型接口。" +
+                f"交流语言: 默认中文，如果用户有特殊要求，可以依照需求。" +
+                f"你的工作: {Service[self.service_key]}。" +
+                f"用户状态: {self.user_state}。" +
+                f"用户信息: {self.user_info}。"
+            }
+        ]
 
 
 class SessionManager:
@@ -113,7 +118,7 @@ class SessionManager:
 
             # 清理用户映射
             if session.user_state == "已认证":
-                session_key = (session.user_info, session.service_key)
+                session_key = session.user_info, session.service_key
                 if self.user_session_map.get(session_key) == service_id:
                     del self.user_session_map[session_key]
 
@@ -195,7 +200,8 @@ class AsyncDeepSeekClient:
             self._tools_initialized = True
 
     async def process_message(self, session: ServiceSession, user_input):
-        await self.ensure_initialized()
+        if session.service_key == "WUT":
+            await self.ensure_initialized()
 
         session.messages.append({"role": "user", "content": user_input})
         session.message_count += 1
@@ -204,8 +210,8 @@ class AsyncDeepSeekClient:
             response = await self.client.chat.completions.create(
                 model="deepseek-chat",
                 messages=session.messages,
-                tools=self.tools,
-                temperature=0.7,
+                tools=self.tools if session.service_key == "WUT" else None,
+                temperature=0.67,
                 max_tokens=4096
             )
 
@@ -259,18 +265,21 @@ class ChatSystem:
         self.session_manager = SessionManager()
         self.client = AsyncDeepSeekClient(api_key, self.session_manager.metrics)
 
-    async def handle_request(self, service_key, user_info, user_state, user_input):
+    async def handle_request(self, service_key, user_info, user_state, user_input, more=""):
         print(f"Ask: {user_input}")
         session = await self.session_manager.get_session(service_key, user_info, user_state)
+        session.messages[0]["content"] += more
         result = await self.client.process_message(session, user_input)
         session.last_active = time.time()
         print(f"Ans: {result['response']}\n" + "-" * 100)
-        return {"service_id": result["service_id"], "response": result["response"], "needs_action": result["tools"] is not None}
+        return {"service_id": result["service_id"], "response": result["response"], "needs_action": result["tools"] is not None and session.service_key == "WUT"}
 
     def get_metrics(self):
-        return {"cache": self.session_manager.metrics.cache_stats,
-                "sessions": self.session_manager.metrics.session_stats,
-                "api_usage": self.session_manager.metrics.api_usage}
+        return {
+            "cache": self.session_manager.metrics.cache_stats,
+            "sessions": self.session_manager.metrics.session_stats,
+            "api_usage": self.session_manager.metrics.api_usage
+        }
 
 
 async def main():

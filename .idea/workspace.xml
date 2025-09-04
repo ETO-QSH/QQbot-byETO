@@ -5,23 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="bfba40d5-3395-4613-9310-15eca2e5b7d3" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/plugins/main.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/plugins/mods/at_poke_mod.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/plugins/mods/common.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/plugins/mods/educoder_mod.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/plugins/mods/file_mod.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/plugins/mods/gaoshu_mod.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/plugins/mods/help_mod.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/plugins/mods/hitokoto_mod.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/plugins/mods/image_mod.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/plugins/mods/respect_mod.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/plugins/mods/rps_dice_mod.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/plugins/mods/video_mod.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/plugins/mods/xingzheng_mod.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/plugins/deepseek.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.env.prod" beforeDir="false" afterPath="$PROJECT_DIR$/.env.prod" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/PixivByETO/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/PixivByETO/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/deepseek_api/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/deepseek_api/main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/plugins/PixivByETO/token.json" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/PixivByETO/token.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/example.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/common.py" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/common.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/mods/help_mod.py" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/mods/help_mod.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -33,6 +23,17 @@
       <list>
         <option value="Python Script" />
       </list>
+    </option>
+  </component>
+  <component name="FlaskConsoleOptions" custom-start-script="import sys&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;from flask.cli import ScriptInfo&#10;locals().update(ScriptInfo(create_app=None).load_app().make_shell_context())&#10;print(&quot;Python %s on %s\nApp: %s [%s]\nInstance: %s&quot; % (sys.version, sys.platform, app.import_name, app.env, app.instance_path))">
+    <envs>
+      <env key="FLASK_APP" value="app" />
+    </envs>
+    <option name="myCustomStartScript" value="import sys&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;from flask.cli import ScriptInfo&#10;locals().update(ScriptInfo(create_app=None).load_app().make_shell_context())&#10;print(&quot;Python %s on %s\nApp: %s [%s]\nInstance: %s&quot; % (sys.version, sys.platform, app.import_name, app.env, app.instance_path))" />
+    <option name="myEnvs">
+      <map>
+        <entry key="FLASK_APP" value="app" />
+      </map>
     </option>
   </component>
   <component name="Git.Settings">
@@ -83,6 +84,7 @@
       <recent name="D:\Work Files\QQbot-byETO\plugins" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\Work Files\QQbot-byETO\plugins" />
       <recent name="D:\Work Files\QQbot-byETO\other" />
       <recent name="D:\Work Files\QQbot-byETO\理工学堂" />
     </key>
@@ -128,7 +130,7 @@
       <workItem from="1745885496282" duration="9092000" />
       <workItem from="1746605421391" duration="1570000" />
       <workItem from="1746612720907" duration="20000" />
-      <workItem from="1756907040905" duration="4738000" />
+      <workItem from="1756907040905" duration="21186000" />
     </task>
     <servers />
   </component>

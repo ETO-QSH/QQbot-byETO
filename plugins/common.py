@@ -4,6 +4,7 @@ import numpy as np
 from curl_cffi import requests
 from datetime import datetime
 from itertools import chain
+from pathlib import Path
 from typing import Tuple
 
 
