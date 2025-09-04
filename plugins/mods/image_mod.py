@@ -1,10 +1,15 @@
 from plugins.common import *
-from plugins.PixivByETO.main import *
 
 
+pixiv = True
 image_response = True
 image = on_command("图片", rule=to_me())
 image_cmd = on_command(("图片", "启用"), rule=to_me(), aliases={("图片", "禁用")}, permission=SUPERUSER)
+
+try:
+    from plugins.PixivByETO.main import *
+except PixivError:
+    pixiv = False
 
 
 def organize_pixiv_data(paths):
@@ -97,20 +102,23 @@ async def handle_function(bot: Bot, event: Event, matcher: Matcher, args: Messag
         await image.finish(f"图片插件已禁用，请联系管理员：{config.superusers}")
 
 
-@image.got("location", prompt="目前开放图片源：[ 本地 | pixiv ]")
+@image.got("location", prompt=f"目前开放图片源：[ 本地 {'| pixiv ' if pixiv else ''}]")
 async def got_location(bot: Bot, event: Event, matcher: Matcher, location: str = ArgPlainText()):
     try:
         if location == '本地':
             await image.finish(MessageSegment.at(event.get_user_id()) + MessageSegment.image(
                 random_file([r"D:\Images\图片", r"D:\Desktop\Desktop\new-pic"])))
         elif location == "pixiv":
-            if event.get_user_id() in config.superusers:
-                matcher.got("mode")
+            if pixiv:
+                if event.get_user_id() in config.superusers:
+                    matcher.got("mode")
+                else:
+                    # await image.send("悠着点用，接口那边也是我写的，纲领是能跑就行，暂时不支持异步，而且因为需要代理，以及使用我的账号，可能出现一些问题。如果需要良好的下载环境，可以在我的github中找到独立的pixiv接口")
+                    # await image.finish("测试阶段权限还未开启")
+                    await image.finish("刚禁的别想了的说")
+                    matcher.got("mode")
             else:
-                # await image.send("悠着点用，接口那边也是我写的，纲领是能跑就行，暂时不支持异步，而且因为需要代理，以及使用我的账号，可能出现一些问题。如果需要良好的下载环境，可以在我的github中找到独立的pixiv接口")
-                # await image.finish("测试阶段权限还未开启")
-                await image.finish("刚禁的别想了的说")
-                matcher.got("mode")
+                await image.finish("代理链接失败")
         else:
             raise "Exception: 未知源"
     except FinishedException:
@@ -262,6 +270,10 @@ async def got_work_id(bot: Bot, event: Event, matcher: Matcher, args: str = ArgP
 
     except FinishedException:
         traceback.print_exc()
+
+    except PixivError:
+        traceback.print_exc()
+        await image.finish("代理链接失败")
 
     except:
         traceback.print_exc()

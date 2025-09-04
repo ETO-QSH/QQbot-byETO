@@ -7,11 +7,18 @@ poke_notice = on_notice(rule=to_me())
 
 @at_me.handle()
 async def at_bot(bot: Bot, event: Event):
-    if '<le>[at:qq=3078491964' in str(event.get_log_string()) and str(
-            event.get_message()) == '' and 'reply:id=' not in str(event.get_log_string()):
-        # 音乐卡片 await at_me.finish(MessageSegment.music_custom(url="https://www.midishow.com/u/Dr.ETO", audio="https://torappu.prts.wiki/assets/audio/voice/char_180_amgoat/cn_042.wav", title="Endless Journey", content="少女終末旅行-EP",
-        # 音乐卡片                                                img_url="https://a1.qpic.cn/psc?/V12Kat591VDTdC/TmEUgtj9EK6.7V8ajmQrEJ0d2fTNbbZT0OkScIYmdH7XloC6xCxrhrUWckUAxAT1UrSveoRSIKCAozqgGJw5Lv3yiFAsIF.eEFS4qBxfyhU!/b&"
-        # 音乐卡片                                                        "ek=1&kp=1&pt=0&bo=AAQABAAEAAQDd1I!&tl=1&vuin=2373204754&tm=1736996400&dis_t=1736999214&dis_k=35ed510366a2e5871531674719dd0bb2&sce=60-2-2&rf=viewer_4"))
+    if '<le>[at:qq=3078491964' in str(event.get_log_string()) and str(event.get_message()) == '' and 'reply:id=' not in str(event.get_log_string()):
+        """
+            cq = (
+                '[CQ:music,type=custom,'
+                'url=https://www.midishow.com/u/Dr.ETO,'
+                'audio=file:///D:/Images/水瀬いのri久保ユリカ-EndlessJourney.flac,'
+                'title=Endless Journey,'
+                'content=少女終末旅行-EP,'
+                'image=file:///D:/Desktop/Desktop/image/少女终末旅行.jpg]'
+            )
+            await at_me.finish(Message(cq))
+        """
         await at_me.finish("꒰ঌ( ⌯' '⌯)໒꒱")
 
 

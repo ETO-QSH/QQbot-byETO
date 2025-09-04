@@ -1,6 +1,7 @@
 import aiofiles, asyncio, ast, copy, cv2, json, os, random, re, requests, shutil, time, traceback, uuid, zipfile
 
 import numpy as np
+from pixivpy3.utils import PixivError
 from curl_cffi import requests
 from datetime import datetime
 from itertools import chain
