@@ -1,4 +1,4 @@
-import ast, copy, copy, cv2, json, os, random, re, requests, shutil, traceback, uuid, zipfile
+import aiofiles, asyncio, ast, copy, cv2, json, os, random, re, requests, shutil, time, traceback, uuid, zipfile
 
 import numpy as np
 from curl_cffi import requests
@@ -9,15 +9,15 @@ from typing import Tuple
 
 
 import nonebot
-from nonebot import on_command, on_message, on_notice, on_fullmatch
+from nonebot import on_command, on_fullmatch, on_message, on_notice
 from nonebot.adapters import Event
-from nonebot.adapters.onebot.v11 import MessageSegment, Message, Bot
+from nonebot.adapters.onebot.v11 import Bot, Message, MessageEvent, MessageSegment
 from nonebot.exception import FinishedException, NetworkError
 from nonebot.internal.matcher import Matcher
 from nonebot.internal.params import ArgPlainText
-from nonebot.params import CommandArg, Command
+from nonebot.params import Command, CommandArg
 from nonebot.permission import SUPERUSER
-from nonebot.rule import to_me
+from nonebot.rule import Rule, to_me
 
 config = nonebot.get_driver().config
 one_node = {"type": "node", "data": {"user_id": "3078491964", "nickname": "ETO", "content": []}}
