@@ -15,26 +15,35 @@ async def recorder(bot: Bot, event: MessageEvent, matcher: Matcher):
     uid = str(event.user_id)
     tim = int(time.time())
 
-    text_parts = []
-    img_urls = []
+    texts = []
+    images = []
+    records = []
+    files = []
+
     for seg in event.message:
         if seg.type == "text":
-            text_parts.append(seg.data["text"])
+            texts.append(seg.data.get("text", ""))
         elif seg.type == "image":
-            img_urls.append(seg.data.get("url", ""))
-    content = "".join(text_parts).strip()
+            images.append(seg.data.get("url", ""))
+        elif seg.type == "record":
+            records.append(seg.data.get("url") or seg.data.get("file", ""))
+        elif seg.type == "file":
+            files.append(seg.data.get("url") or seg.data.get("file", ""))
+
+    hour_str = time.strftime("%H", time.localtime(tim))
+    date_str = time.strftime("%Y-%m-%d", time.localtime(tim))
+    timestamp = time.strftime("%H:%M:%S", time.localtime(tim))
 
     item = {
         "message_id": mid,
         "user_id": uid,
         "group_id": gid,
-        "timestamp": tim,
-        "content": content,
-        "images": img_urls
+        "timestamp": timestamp,
+        "text": texts,
+        "images": images,
+        "records": records,
+        "files": files
     }
-
-    hour_str = time.strftime("%H", time.localtime(tim))
-    date_str = time.strftime("%Y-%m-%d", time.localtime(tim))
 
     dir_path = DATA_DIR / gid / date_str
     dir_path.mkdir(parents=True, exist_ok=True)
