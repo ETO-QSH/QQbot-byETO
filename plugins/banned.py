@@ -16,35 +16,36 @@ async def save_ban(data):
 
 @banned.handle()
 async def handle_function(bot: Bot, event: Event, matcher: Matcher, args: Message = CommandArg()):
-    at_seg = args["at"]
+    qq_list: List[str] = []
 
-    if at_seg:
-        matcher.set_arg("location", at_seg[0].data["qq"])
-        return
+    for seg in args["at"]:
+        qq_list.append(str(seg.data["qq"]))
 
-    text = args.extract_plain_text().strip()
-    if text.isdigit():
-        matcher.set_arg("location", text)
-    else:
-        await banned.finish(MessageSegment.at(event.get_user_id()) + "参数错误")
+    for seg in args.extract_plain_text().split():
+        seg = seg.strip()
+        if seg.isdigit():
+            qq_list.append(seg)
+
+    if not qq_list:
+        await banned.finish(MessageSegment.at(event.get_user_id()) + "请至少 @ 一位用户或输入 QQ 号")
+
+    matcher.set_arg("location", " ".join(qq_list))
 
 
 @banned.got("location")
 async def got_location(location: str = Arg(), cmd: tuple = Command()):
-    try:
-        ban_list = await load_ban()
-        cmd, user = cmd[0], location
+    action = cmd[0]
+    qq_list = location.split()
 
-        if cmd == "封禁":
-            ban_list[user] = True
+    ban_list = await load_ban()
+    ok_users = []
+
+    for qq in qq_list:
+        if action == "封禁":
+            ban_list[qq] = True
         else:
-            ban_list.pop(user, None)
+            ban_list.pop(qq, None)
+        ok_users.append(qq)
 
-        await save_ban(ban_list)
-        await banned.finish(f"已{cmd}用户：{user}")
-
-    except FinishedException:
-        pass
-
-    except Exception as e:
-        await banned.finish(f"操作失败：{e}")
+    await save_ban(ban_list)
+    await banned.finish(f"已{action}用户：{'、'.join(ok_users)}")

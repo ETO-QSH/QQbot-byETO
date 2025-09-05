@@ -5,14 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="bfba40d5-3395-4613-9310-15eca2e5b7d3" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/other/ban_list.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/plugins/PixivByETO/token.json" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/PixivByETO/token.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/plugins/banned.py" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/banned.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/common.py" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/common.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resource/少女终末旅行.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resource/水瀬いのり 久保ユリカ - Endless Journey.flac" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -132,7 +127,7 @@
       <workItem from="1745885496282" duration="9092000" />
       <workItem from="1746605421391" duration="1570000" />
       <workItem from="1746612720907" duration="20000" />
-      <workItem from="1756907040905" duration="45008000" />
+      <workItem from="1756907040905" duration="45677000" />
     </task>
     <servers />
   </component>
