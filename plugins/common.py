@@ -15,13 +15,22 @@ from nonebot.adapters import Event
 from nonebot.adapters.onebot.v11 import Bot, Message, MessageEvent, MessageSegment
 from nonebot.exception import FinishedException, NetworkError
 from nonebot.internal.matcher import Matcher
-from nonebot.internal.params import ArgPlainText
+from nonebot.internal.params import Arg, ArgPlainText
 from nonebot.params import Command, CommandArg
 from nonebot.permission import SUPERUSER
-from nonebot.rule import Rule, to_me
+from nonebot.rule import Rule, to_me as _to_me
 
 config = nonebot.get_driver().config
 one_node = {"type": "node", "data": {"user_id": "3078491964", "nickname": "ETO", "content": []}}
+BAN_FILE = Path("other/ban_list.json")
+
+
+def to_me():
+    async def _check(event: Event):
+        ban_list = json.loads(BAN_FILE.read_text("utf-8"))
+        user_id = str(event.get_user_id())
+        return user_id not in ban_list
+    return Rule(_check) & _to_me()
 
 
 def random_file(DIRS):
