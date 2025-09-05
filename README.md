@@ -22,6 +22,6 @@
 
 项目的管理者为 {2373204754}，如有需求和或者bug都可以反馈
 
-项目的URL为 https://github.com/ETO-QSH/QQbot-byETO/tree/main/plugins，可以去更细致的了解实现和api哦
+项目的URL为 [ETO-QSH/QQbot-byETO](https://github.com/ETO-QSH/QQbot-byETO/tree/main/plugins)，可以去更细致的了解实现和api哦
 
 考试了没空写了就这样了先
