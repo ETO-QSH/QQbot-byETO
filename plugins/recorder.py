@@ -19,6 +19,7 @@ async def recorder(bot: Bot, event: MessageEvent, matcher: Matcher):
     images = []
     records = []
     files = []
+    ats = []
 
     for seg in event.message:
         if seg.type == "text":
@@ -29,6 +30,8 @@ async def recorder(bot: Bot, event: MessageEvent, matcher: Matcher):
             records.append(seg.data.get("url") or seg.data.get("file", ""))
         elif seg.type == "file":
             files.append(seg.data.get("url") or seg.data.get("file", ""))
+        elif seg.type == "at":
+            ats.append(seg.data.get("qq", ""))
 
     hour_str = time.strftime("%H", time.localtime(tim))
     date_str = time.strftime("%Y-%m-%d", time.localtime(tim))
@@ -42,7 +45,8 @@ async def recorder(bot: Bot, event: MessageEvent, matcher: Matcher):
         "text": texts,
         "images": images,
         "records": records,
-        "files": files
+        "files": files,
+        "ats": ats
     }
 
     dir_path = DATA_DIR / gid / date_str
