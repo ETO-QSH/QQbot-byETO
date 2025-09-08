@@ -9,13 +9,15 @@ poke_notice = on_notice(rule=to_me())
 async def at_bot(bot: Bot, event: Event):
     if '<le>[at:qq=3078491964' in str(event.get_log_string()) and str(event.get_message()) == '' and 'reply:id=' not in str(event.get_log_string()):
         """
+            audio = "https://raw.githubusercontent.com/ETO-QSH/QQbot-byETO/refs/heads/main/links/水瀬いのり%20久保ユリカ%20-%20Endless%20Journey.flac"
+            image = "https://raw.githubusercontent.com/ETO-QSH/QQbot-byETO/refs/heads/main/links/少女终末旅行_1x1.jpg"
             cq = (
                 '[CQ:music,type=custom,'
-                'url=https://www.midishow.com/u/Dr.ETO,'
-                'audio=file:///D:/Images/水瀬いのri久保ユリカ-EndlessJourney.flac,'
+                'url=https://github.com/ETO-QSH/QQbot-byETO,'
+                'audio={},'
                 'title=Endless Journey,'
                 'content=少女終末旅行-EP,'
-                'image=file:///D:/Desktop/Desktop/image/少女终末旅行.jpg]'
+                'image={}]'.format(audio, image)
             )
             await at_me.finish(Message(cq))
         """
