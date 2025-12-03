@@ -11,4 +11,5 @@ from plugins.mods.video_mod import *
 from plugins.mods.xingzheng_mod import *
 
 from plugins.banned import *
+from plugins.log_json import *
 from plugins.recorder import *
