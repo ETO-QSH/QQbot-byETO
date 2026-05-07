@@ -8,7 +8,6 @@ from itertools import chain
 from pathlib import Path
 from typing import Tuple
 
-
 import nonebot
 from nonebot import on_command, on_fullmatch, on_message, on_notice
 from nonebot.adapters import Event

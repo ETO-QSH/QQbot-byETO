@@ -4,12 +4,13 @@ from plugins.mods.file_mod import *
 from plugins.mods.gaoshu_mod import *
 from plugins.mods.help_mod import *
 from plugins.mods.hitokoto_mod import *
-from plugins.mods.image_mod import *
 from plugins.mods.respect_mod import *
 from plugins.mods.rps_dice_mod import *
 from plugins.mods.video_mod import *
 from plugins.mods.xingzheng_mod import *
+from plugins.mods.bilibiliq_mod import *
+from plugins.mods.image_mod import *
 
 from plugins.banned import *
-from plugins.log_json import *
 from plugins.recorder import *
+# from plugins.log_json import *
